@@ -4,211 +4,493 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>_NOBODY STUDIOS. | TRUST NOBODY.</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,700&family=Inter:wght@400;900&family=Space+Mono&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Cormorant+Garamond:ital,wght@1,700&display=swap" rel="stylesheet">
     <style>
-        :root { --y: #facc15; --blk: #0a0a0a; }
-        *{box-sizing:border-box;} html{scroll-behavior:smooth;cursor:crosshair;}
-        body{background:var(--blk);color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden;margin:0;}
-        .mono{font-family:'Space Mono',monospace;} .serif{font-family:'Cormorant Garamond',serif;} .display{font-family:'Bebas Neue',sans-serif;}
-        .grain{background-image:url('https://www.transparenttextures.com/patterns/stardust.png');background-attachment:fixed;}
+        :root {
+            --y: #facc15;
+            --blk: #060606;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { height: 100%; cursor: crosshair; }
+        body {
+            background: var(--blk);
+            color: #fff;
+            font-family: 'Space Mono', monospace;
+            overflow-x: hidden;
+            min-height: 100%;
+        }
+
+        /* GRAIN */
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 900;
+        }
+
+        /* PHOTO BG */
+        .bg {
+            position: fixed; inset: 0; z-index: 0;
+        }
+        .bg img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            object-position: center 20%;
+            filter: grayscale(100%) brightness(0.28) contrast(1.15);
+            transition: opacity 1.6s ease;
+        }
+        .bg::after {
+            content: '';
+            position: absolute; inset: 0;
+            background:
+                linear-gradient(to top, rgba(6,6,6,1) 0%, rgba(6,6,6,0.75) 45%, rgba(6,6,6,0.25) 100%),
+                linear-gradient(to right, rgba(6,6,6,0.75) 0%, transparent 65%);
+        }
+
+        /* LAYOUT */
+        .wrap {
+            position: relative; z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 0 56px;
+        }
+
         /* NAV */
-        .nav{position:fixed;top:0;width:100%;z-index:100;background:rgba(10,10,10,0.88);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);}
-        .nav-i{max-width:1400px;margin:0 auto;padding:18px 32px;display:flex;justify-content:space-between;align-items:center;}
-        .logo{font-weight:900;font-size:18px;text-transform:uppercase;letter-spacing:-0.03em;text-decoration:none;color:#fff;transition:color .2s;}
-        .logo:hover{color:var(--y);} .logo em{color:var(--y);font-style:normal;}
-        .nav-links{display:flex;gap:36px;list-style:none;margin:0;padding:0;}
-        .nav-links a{font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.22em;color:rgba(255,255,255,.55);text-decoration:none;transition:color .2s;}
-        .nav-links a:hover{color:var(--y);}
-        .nav-cta{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.15em;background:var(--y);color:#000;padding:10px 20px;text-decoration:none;transition:all .2s;}
-        .nav-cta:hover{box-shadow:0 8px 20px rgba(250,204,21,.3);transform:translateY(-1px);}
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 34px 0;
+            flex-shrink: 0;
+        }
+        .logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 22px;
+            letter-spacing: 0.1em;
+            color: #fff;
+            text-decoration: none;
+        }
+        .logo em { color: var(--y); font-style: normal; }
+
+        .status {
+            display: flex; align-items: center; gap: 10px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.36em;
+            color: rgba(255,255,255,0.3);
+        }
+        .dot {
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: var(--y);
+            animation: throb 2s ease-in-out infinite;
+        }
+        @keyframes throb {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50%       { opacity: 0.3; transform: scale(0.6); }
+        }
+
         /* HERO */
-        .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;}
-        .hero-bg{position:absolute;inset:0;}
-        .hero-bg img{width:100%;height:100%;object-fit:cover;filter:grayscale(100%) brightness(.32);}
-        .hero-bg:after{content:'';position:absolute;inset:0;background:linear-gradient(to top,#0a0a0a 0%,transparent 50%,rgba(10,10,10,.55) 100%);}
-        .hero-content{position:relative;z-index:1;text-align:center;padding:0 24px;padding-top:80px;}
-        .eyebrow{font-family:'Space Mono',monospace;font-size:10px;color:var(--y);text-transform:uppercase;letter-spacing:.45em;margin-bottom:24px;display:block;}
-        .hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(80px,16vw,240px);line-height:.82;letter-spacing:-.02em;margin:0 0 40px;}
-        .hero-title .out{-webkit-text-stroke:1.5px rgba(255,255,255,.28);color:transparent;}
-        .hero-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(18px,2.8vw,34px);color:rgba(255,255,255,.65);max-width:780px;margin:0 auto 48px;line-height:1.35;}
-        .hero-actions{display:flex;gap:24px;justify-content:center;align-items:center;flex-wrap:wrap;}
-        /* VERTICALS */
-        .section{padding:100px 32px;max-width:1400px;margin:0 auto;}
-        .section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,6vw,88px);line-height:.88;letter-spacing:.02em;margin:16px 0 0;}
-        .v-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.07);margin-top:56px;}
-        .v-card{background:#000;padding:44px 36px;display:flex;flex-direction:column;text-decoration:none;color:#fff;transition:background .25s;}
-        .v-card:hover{background:#0c0c0c;}
-        .v-card.off{opacity:.32;pointer-events:none;}
-        .v-num{font-family:'Space Mono',monospace;font-size:9px;color:var(--y);text-transform:uppercase;letter-spacing:.28em;margin-bottom:28px;}
-        .v-num.dim{color:rgba(255,255,255,.18);}
-        .v-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,4.5vw,68px);line-height:.88;letter-spacing:.02em;margin-bottom:16px;}
-        .v-tag{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;color:var(--y);margin-bottom:16px;}
-        .v-tag.dim{color:rgba(255,255,255,.25);}
-        .v-desc{font-size:13px;color:rgba(255,255,255,.48);line-height:1.75;margin-bottom:28px;flex-grow:1;}
-        .v-apps{font-family:'Space Mono',monospace;font-size:9px;text-transform:uppercase;color:rgba(255,255,255,.2);line-height:2.1;margin-bottom:28px;}
-        .v-link{font-family:'Space Mono',monospace;font-size:10px;color:var(--y);text-transform:uppercase;letter-spacing:.18em;transition:letter-spacing .25s;}
-        .v-card:hover .v-link{letter-spacing:.28em;}
-        .v-link.dim{color:rgba(255,255,255,.18);}
-        /* GAMES BAR */
-        .games-bar{background:var(--y);padding:72px 32px;position:relative;overflow:hidden;}
-        .games-bar-i{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:32px;flex-wrap:wrap;position:relative;z-index:1;}
-        .bg-word{position:absolute;right:-20px;top:-30px;font-family:'Bebas Neue',sans-serif;font-size:220px;color:rgba(0,0,0,.07);line-height:1;pointer-events:none;}
-        .g-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,6vw,80px);line-height:.9;color:#000;}
-        .g-sub{font-size:14px;color:rgba(0,0,0,.55);margin-top:12px;max-width:400px;}
-        .tag{background:#000;color:#fff;font-family:'Space Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.18em;padding:8px 14px;display:inline-block;}
-        /* MANIFESTO */
-        .manifesto{padding:100px 32px;max-width:860px;margin:0 auto;text-align:center;border-top:1px solid rgba(255,255,255,.05);}
-        .mquote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(26px,3.5vw,52px);line-height:1.3;margin-bottom:48px;}
-        .mquote strong{font-style:normal;text-decoration:underline;text-decoration-color:var(--y);text-underline-offset:6px;}
-        .m-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;text-align:left;}
-        .m-item{font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,.3);text-transform:uppercase;line-height:1.9;}
+        .hero {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-bottom: 72px;
+        }
+
+        /* TITLE */
+        .title {
+            font-family: 'Bebas Neue', sans-serif;
+            line-height: 0.83;
+            letter-spacing: -0.01em;
+            margin-bottom: 44px;
+        }
+
+        /* TRUST — solid white, large, slides from left */
+        .t-trust {
+            display: block;
+            font-size: clamp(100px, 18vw, 270px);
+            color: #ffffff;
+            text-shadow: 0 0 120px rgba(255,255,255,0.08);
+            animation: fromLeft 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s both;
+        }
+
+        /* NOBODY — yellow, slides from right, fills in */
+        .t-nobody {
+            display: block;
+            font-size: clamp(100px, 18vw, 270px);
+            animation: fromRight 0.9s cubic-bezier(0.16,1,0.3,1) 0.25s both;
+        }
+
+        .nw {
+            position: relative;
+            display: inline-block;
+            animation: glitch 7s ease-in-out 2.5s infinite;
+        }
+
+        .nw-ghost {
+            display: block;
+            -webkit-text-stroke: 2px rgba(255,255,255,0.1);
+            color: transparent;
+        }
+
+        .nw-fill {
+            position: absolute; left: 0; top: 0;
+            display: block;
+            color: var(--y);
+            clip-path: inset(0 100% 0 0);
+            animation: sweepIn 1s cubic-bezier(0.77,0,0.18,1) 0.9s forwards;
+            text-shadow: 0 0 80px rgba(250,204,21,0.25);
+        }
+
+        .nw-shadow {
+            position: absolute; left: 5px; top: 5px;
+            display: block;
+            color: rgba(250,204,21,0.1);
+            z-index: -1;
+        }
+
+        @keyframes fromLeft {
+            from { opacity: 0; transform: translateX(-60px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fromRight {
+            from { opacity: 0; transform: translateX(60px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes sweepIn {
+            to { clip-path: inset(0 0% 0 0); }
+        }
+        @keyframes glitch {
+            0%, 87%, 100% { transform: translate(0); filter: none; }
+            89%  { transform: translate(-4px, 1px); filter: hue-rotate(20deg) brightness(1.3); }
+            91%  { transform: translate(4px, -2px); }
+            93%  { transform: translate(-2px, 1px); filter: hue-rotate(-15deg); }
+            95%  { transform: translate(0); filter: none; }
+        }
+
+        /* TAGLINE */
+        .tagline {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: clamp(22px, 2.4vw, 32px);
+            color: rgba(255,255,255,0.85);
+            line-height: 1.45;
+            max-width: 560px;
+            margin-bottom: 52px;
+            animation: fadeUp 0.8s ease 0.85s both;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* WHAT WE BUILD */
+        .what-wrap {
+            margin-bottom: 56px;
+            animation: fadeUp 0.8s ease 1s both;
+        }
+
+        .section-label {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.5em;
+            color: var(--y);
+            display: block;
+            margin-bottom: 18px;
+        }
+
+        .what-grid {
+            display: grid;
+            grid-template-columns: repeat(4, auto);
+            gap: 2px;
+            width: fit-content;
+        }
+
+        .what-item {
+            background: rgba(6,6,6,0.6);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 18px 24px;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.25s, background 0.25s;
+        }
+
+        .what-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 2px;
+            background: var(--y);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .what-item:hover {
+            background: rgba(250,204,21,0.06);
+            border-color: rgba(250,204,21,0.3);
+        }
+        .what-item:hover::after { transform: scaleX(1); }
+
+        .what-num {
+            font-size: 9px;
+            color: var(--y);
+            letter-spacing: 0.3em;
+            display: block;
+            margin-bottom: 10px;
+            opacity: 0.6;
+        }
+
+        .what-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 26px;
+            letter-spacing: 0.06em;
+            color: #fff;
+            display: block;
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+
+        .what-sub {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: rgba(255,255,255,0.4);
+            line-height: 1.5;
+        }
+
+        /* SOCIAL CTA */
+        .social-wrap {
+            animation: fadeUp 0.8s ease 1.15s both;
+        }
+
+        .social-label {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.46em;
+            color: rgba(255,255,255,0.35);
+            display: block;
+            margin-bottom: 18px;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(6,6,6,0.65);
+            border: 1px solid rgba(250,204,21,0.35);
+            padding: 18px 28px;
+            text-decoration: none;
+            transition: all 0.25s;
+            max-width: 420px;
+        }
+
+        .social-link:hover {
+            background: rgba(250,204,21,0.08);
+            border-color: var(--y);
+            transform: translateY(-2px);
+        }
+
+        .social-link:hover .social-arrow {
+            letter-spacing: 0.36em;
+        }
+
+        .ig-icon {
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+        }
+
+        .social-handle {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 28px;
+            letter-spacing: 0.06em;
+            color: var(--y);
+            line-height: 1;
+        }
+
+        .social-arrow {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.26em;
+            color: rgba(255,255,255,0.35);
+            margin-left: auto;
+            transition: letter-spacing 0.25s;
+        }
+
+        .social-fine {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: rgba(255,255,255,0.18);
+            margin-top: 14px;
+        }
+
         /* FOOTER */
-        footer{background:#000;border-top:1px solid rgba(255,255,255,.07);padding:56px 32px 0;}
-        .foot-i{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap;}
-        .foot-logo{font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:.04em;}
-        .foot-logo em{color:var(--y);font-style:normal;}
-        .foot-sub{font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.25);text-transform:uppercase;line-height:2;margin-top:8px;}
-        .foot-links{display:flex;flex-direction:column;gap:10px;align-items:flex-end;}
-        .foot-links a{font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:rgba(255,255,255,.35);text-decoration:none;transition:color .2s;}
-        .foot-links a:hover{color:var(--y);}
-        .foot-bottom{max-width:1400px;margin:28px auto 0;padding:20px 0;border-top:1px solid rgba(255,255,255,.04);display:flex;justify-content:space-between;}
-        .foot-bottom span{font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.13);text-transform:uppercase;}
-        /* NS UNIVERSE BAR */
-        .ns-bar{background:#000;border-top:1px solid rgba(250,204,21,.12);padding:14px 32px;}
-        .ns-bar-i{max-width:1400px;margin:0 auto;display:flex;gap:28px;align-items:center;flex-wrap:wrap;}
-        .ns-label{font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.18);text-transform:uppercase;letter-spacing:.28em;margin-right:4px;}
-        .ns-bar a{font-family:'Space Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:rgba(255,255,255,.3);text-decoration:none;transition:color .2s;}
-        .ns-bar a:hover,.ns-bar a.here{color:var(--y);}
-        /* BTNS */
-        .btn-outline{border:1px solid var(--y);color:var(--y);font-family:'Space Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.22em;padding:14px 28px;text-decoration:none;transition:all .2s;display:inline-block;}
-        .btn-outline:hover{background:var(--y);color:#000;}
-        @media(max-width:768px){.v-grid{grid-template-columns:1fr;}.m-grid{grid-template-columns:1fr;}.nav-links{display:none;}.games-bar-i{flex-direction:column;align-items:flex-start;}.foot-i{flex-direction:column;align-items:flex-start;}.foot-links{align-items:flex-start;}}
+        footer {
+            flex-shrink: 0;
+            padding: 24px 0;
+            border-top: 1px solid rgba(255,255,255,0.07);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .foot-left {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .foot-tagline {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 17px;
+            color: rgba(255,255,255,0.55);
+        }
+
+        .foot-meta {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: rgba(255,255,255,0.15);
+        }
+
+        .foot-right a {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: rgba(255,255,255,0.3);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .foot-right a:hover { color: var(--y); }
+
+        /* MOBILE */
+        @media (max-width: 700px) {
+            .wrap { padding: 0 26px; }
+            .status { display: none; }
+            .what-grid { grid-template-columns: repeat(2, 1fr); width: 100%; }
+            .what-item { padding: 14px 16px; }
+            footer { flex-direction: column; align-items: flex-start; }
+        }
     </style>
 </head>
-<body class="grain">
+<body>
 
-<nav class="nav">
-    <div class="nav-i">
-        <a href="index.html" class="logo"><em>_</em>Nobody Studios.</a>
-        <ul class="nav-links">
-            <li><a href="wellness/index.html">Maintenance</a></li>
-            <li><a href="games/index.html" style="opacity:.4">Simulations</a></li>
-            <li><a href="content/index.html">Transmissions</a></li>
-        </ul>
-        <a href="content/index.html" class="nav-cta">Hire Nobody</a>
-    </div>
-</nav>
-
-<section class="hero">
-    <div class="hero-bg">
-        <img src="https://images.unsplash.com/photo-1516339901601-2e1b62dc0c45?w=2000&auto=format&fit=crop" alt="">
-    </div>
-    <div class="hero-content">
-        <span class="eyebrow">San Antonio // Est. 2026 // A Studio Building in Public</span>
-        <h1 class="hero-title">TRUST<br><span class="out">NOBODY.</span></h1>
-        <p class="hero-sub">"Bespoke wellness tools, interactive simulations, and high-fidelity content for the resilient human."</p>
-        <div class="hero-actions">
-            <a href="#verticals" class="btn-outline">Enter the System</a>
-            <a href="content/index.html" style="font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.22em;color:rgba(250,204,21,.55);text-decoration:none;">Hire the Studio →</a>
-        </div>
-    </div>
-</section>
-
-<div id="verticals" class="section">
-    <span class="eyebrow">The Nobody Studios Universe</span>
-    <h2 class="section-title">Three Verticals.<br>One Studio.</h2>
-    <div class="v-grid">
-        <a href="wellness/index.html" class="v-card">
-            <div class="v-num">Protocol_01 // Active</div>
-            <div class="v-title">Bio<br>Maintenance</div>
-            <div class="v-tag">"Stop decaying. Start tracking."</div>
-            <p class="v-desc">Planet Strength, Steady, and Signal — biological tools built for survival, not the wellness industrial complex.</p>
-            <div class="v-apps">Planet Strength · Beta Live<br>Steady · Coming Soon<br>Signal · Coming Soon</div>
-            <div class="v-link">Enter Maintenance →</div>
-        </a>
-        <div class="v-card off">
-            <div class="v-num dim">Protocol_02 // In Build</div>
-            <div class="v-title">Simu<br>lations</div>
-            <div class="v-tag dim">"Decisions have consequences."</div>
-            <p class="v-desc">Plot Twisted, High Stakes, and an expanding arcade of browser-based games and interactive experiments.</p>
-            <div class="v-apps">Plot Twisted · In Dev<br>High Stakes · In Dev<br>More · Unknown</div>
-            <div class="v-link dim">Coming Soon</div>
-        </div>
-        <a href="content/index.html" class="v-card">
-            <div class="v-num">Protocol_03 // Available</div>
-            <div class="v-title">Trans<br>missions</div>
-            <div class="v-tag">"Enterprise results. Independent pricing."</div>
-            <p class="v-desc">6M followers built. $75K/mo managed. Video, photo, drone, brand strategy — now available to SATX businesses.</p>
-            <div class="v-apps">Video Production · Available<br>Drone Capture · Available<br>Brand Strategy · Available</div>
-            <div class="v-link">Hire the Studio →</div>
-        </a>
-    </div>
+<div class="bg">
+    <img id="bgImg"
+         src="https://images.unsplash.com/photo-1652180126105-da17c5824a0f?q=80&w=1800&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+         alt="">
 </div>
 
-<section class="games-bar">
-    <div class="bg-word">NOBODY</div>
-    <div class="games-bar-i">
-        <div>
-            <span style="font-family:'Space Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.28em;color:rgba(0,0,0,.45);display:block;margin-bottom:12px;">[ Protocol_02 ]</span>
-            <div class="g-title">We Also Make<br>Bad Decisions.</div>
-            <p class="g-sub">Games. Simulations. Interactive nonsense. Everything designed to distract you from the crushing reality of being Nobody.</p>
+<div class="wrap">
+
+    <!-- NAV -->
+    <nav>
+        <a href="#" class="logo"><em>_</em>Nobody Studios.</a>
+        <div class="status">
+            <div class="dot"></div>
+            Building in Public — San Antonio, TX
         </div>
-        <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-end;">
-            <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;">
-                <span class="tag">In Development</span>
-                <span class="tag">Plot Twisted</span>
-                <span class="tag">High Stakes</span>
+    </nav>
+
+    <!-- HERO -->
+    <main class="hero">
+
+        <!-- TITLE -->
+        <h1 class="title">
+            <span class="t-trust">TRUST</span>
+            <span class="t-nobody">
+                <span class="nw">
+                    <span class="nw-shadow" aria-hidden="true">NOBODY.</span>
+                    <span class="nw-ghost">NOBODY.</span>
+                    <span class="nw-fill"  aria-hidden="true">NOBODY.</span>
+                </span>
+            </span>
+        </h1>
+
+        <!-- TAGLINE -->
+        <p class="tagline">
+            "Built by Nobody. For everybody who's tired of everything else."
+        </p>
+
+        <!-- WHAT WE BUILD -->
+        <div class="what-wrap">
+            <span class="section-label">What we build</span>
+            <div class="what-grid">
+                <div class="what-item">
+                    <span class="what-num">01</span>
+                    <span class="what-name">Wellness</span>
+                    <span class="what-sub">Apps for<br>the resilient</span>
+                </div>
+                <div class="what-item">
+                    <span class="what-num">02</span>
+                    <span class="what-name">Marketer</span>
+                    <span class="what-sub">Tools built<br>different</span>
+                </div>
+                <div class="what-item">
+                    <span class="what-num">03</span>
+                    <span class="what-name">Games</span>
+                    <span class="what-sub">Bad decisions.<br>Fun results.</span>
+                </div>
+                <div class="what-item">
+                    <span class="what-num">04</span>
+                    <span class="what-name">Content</span>
+                    <span class="what-sub">For real<br>businesses</span>
+                </div>
             </div>
-            <a href="games/index.html" style="font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.18em;color:rgba(0,0,0,.4);text-decoration:none;">View Status →</a>
         </div>
-    </div>
-</section>
 
-<section class="manifesto">
-    <span class="eyebrow">The Manifesto</span>
-    <div class="mquote">"The world is full of experts telling you how to live. Listen to <strong>Nobody</strong>."</div>
-    <div class="m-grid">
-        <div class="m-item">
-            <p>01. We do not participate in streaks. Streaks are for the fragile. Consistency is for the resilient.</p><br>
-            <p>02. We do not share our progress. Progress is a private conversation between you and the weights.</p><br>
-            <p>03. We do not use "AI Coaches." Nobody knows your body better than you. Pay attention.</p>
-        </div>
-        <div class="m-item">
-            <p>04. Self-care is a marketing term. Maintenance is a biological requirement. Do the work.</p><br>
-            <p>05. If you are looking for a community to validate your existence, you have found the wrong place.</p><br>
-            <p>06. Trust Nobody. Especially yourself at 5 AM.</p>
-        </div>
-    </div>
-</section>
+        <!-- SOCIAL CTA -->
+        <div class="social-wrap">
+            <span class="social-label">Follow for updates — we're building in public</span>
+            <a class="social-link"
+               href="https://instagram.com/_nobodystudios"
+               target="_blank"
+               rel="noopener noreferrer">
 
-<footer>
-    <div class="foot-i">
-        <div>
-            <div class="foot-logo"><em>_</em>Nobody Studios.</div>
-            <div class="foot-sub">Owned and operated by Nobody.<br>Built in the shadows. San Antonio, TX.<br>LOG_ID: 9942-X-NOBODY</div>
+                <!-- Instagram icon (inline SVG — no dependency) -->
+                <svg class="ig-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color:rgba(255,255,255,0.5)">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                    <circle cx="12" cy="12" r="4.5"/>
+                    <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+                </svg>
+
+                <span class="social-handle">@_nobodystudios</span>
+                <span class="social-arrow">Follow →</span>
+            </a>
+            <div class="social-fine">Instagram — updates drop here first</div>
         </div>
-        <div class="foot-links">
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="foot-left">
+            <span class="foot-tagline">"Trust Nobody. Do the work."</span>
+            <span class="foot-meta">© 2026 Nobody Studios — San Antonio, TX — LOG_ID: 9942-X-NOBODY</span>
+        </div>
+        <div class="foot-right">
             <a href="mailto:hirebencampbell@gmail.com">hirebencampbell@gmail.com</a>
-            <a href="https://instagram.com/_nobodystudios" target="_blank">IG: @_nobodystudios</a>
-            <a href="wellness/index.html">Wellness Protocols</a>
-            <a href="content/index.html">Content Strategy</a>
         </div>
-    </div>
-    <div class="foot-bottom">
-        <span>© 2026 Nobody Studios. No rights reserved.</span>
-        <span>Trust Nobody. Do the work.</span>
-    </div>
-</footer>
-<div class="ns-bar">
-    <div class="ns-bar-i">
-        <span class="ns-label">NS Universe:</span>
-        <a href="index.html" class="here">Hub</a>
-        <a href="wellness/index.html">Wellness</a>
-        <a href="games/index.html">Games</a>
-        <a href="content/index.html">Content</a>
-    </div>
+    </footer>
+
 </div>
+
+<script>
+    // Single fixed background image — no cycling
+    void 0;
+</script>
 
 </body>
 </html>
