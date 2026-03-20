@@ -47,7 +47,7 @@ const CONFIG = {
       alt: 'Nobody Creative workspace',
     },
     guide: {
-      url: 'https://images.unsplash.com/photo-1604514628550-37477afdf4e3?w=900&auto=format&fit=crop&q=80',
+      url: 'https://raw.githubusercontent.com/kylozenzen/ben-portfolio/main/Ben_Headshot_2026_Grey.png',
       alt: 'Ben Campbell — Nobody Creative',
     },
     banner: {
@@ -421,6 +421,8 @@ select.field-input{cursor:crosshair}
   <input name="type">
   <input name="goal">
   <input name="time">
+  <input name="inspiration">
+  <input name="anything-else">
 </form>
 
 <canvas id="matrix-canvas"></canvas>
@@ -495,6 +497,19 @@ select.field-input{cursor:crosshair}
           <option>Weekends</option>
           <option>Anytime — just reach out</option>
         </select>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="f-inspiration">Any inspiration? Accounts, brands, or vibes you love <span style="color:#bbb;font-weight:400;letter-spacing:.1em">(optional)</span></label>
+        <textarea class="field-input" id="f-inspiration" style="min-height:75px" placeholder="Links, Instagram handles, words that describe the feeling you're going for — anything helps"></textarea>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="f-extra">Anything else we should know? <span style="color:#bbb;font-weight:400;letter-spacing:.1em">(optional)</span></label>
+        <textarea class="field-input" id="f-extra" style="min-height:75px" placeholder="Timelines, upcoming events, something you've been sitting on — this is the place"></textarea>
+      </div>
+      <!-- Pre-submit note -->
+      <div style="border-left:2px solid #e5e5e5;padding:14px 18px;margin:24px 0 8px;background:#fafafa">
+        <p style="font-family:'Space Mono',monospace;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.3em;color:#999;margin-bottom:6px">What happens next</p>
+        <p id="drawer-next-step" style="font-size:13px;color:#444;line-height:1.7">I'll review your submission personally and reach out within 24 hours — usually faster — to set up a quick call. No sales pitch. Just a real conversation about what you're building and whether we're a fit.</p>
       </div>
       <button class="drawer-submit" id="drawer-submit-btn">Submit My Application →</button>
       <p class="drawer-subtext">No commitment. No spam. Just a conversation.</p>
@@ -979,6 +994,10 @@ function openSlotDrawer(ctx){
   document.getElementById('opts-biz').style.display     = isP ? 'none' : '';
   document.getElementById('opts-personal').style.display= isP ? '' : 'none';
   document.getElementById('f-type').value = '';
+  document.getElementById('drawer-next-step').textContent = isP
+    ? "I'll review your submission personally and reach out within 24 hours to set up a quick call. This is about making something beautiful together — no pressure, just a conversation."
+    : "I'll review your submission personally and reach out within 24 hours — usually faster — to set up a quick call. No sales pitch. Just a real conversation about what you're building and whether we're a fit.";
+
   submitBtn.textContent = isP ? CONFIG.personal.ctaLabel : 'Submit My Application →';
 
   document.getElementById('drawer-form-wrap').style.display = '';
@@ -1026,15 +1045,17 @@ submitBtn.addEventListener('click', ()=>{
     method:  'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({
-      'form-name': 'slot-application',
-      'context':   isP ? 'Personal / Family' : 'Business',
-      'name':      name,
-      'business':  biz,
-      'email':     email,
-      'phone':     phone || '—',
-      'type':      type,
-      'goal':      goal  || '—',
-      'time':      time  || '—',
+      'form-name':     'slot-application',
+      'context':       isP ? 'Personal / Family' : 'Business',
+      'name':          name,
+      'business':      biz,
+      'email':         email,
+      'phone':         phone || '—',
+      'type':          type,
+      'goal':          goal  || '—',
+      'time':          time  || '—',
+      'inspiration':   document.getElementById('f-inspiration').value.trim() || '—',
+      'anything-else': document.getElementById('f-extra').value.trim() || '—',
     }).toString(),
   })
   .then(res => {
