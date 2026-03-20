@@ -1,508 +1,1139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>_NOBODY CREATIVE. | TRUST NOBODY.</title>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Cormorant+Garamond:ital,wght@1,700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --y: #facc15;
-            --blk: #060606;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html { height: 100%; cursor: crosshair; }
-        body {
-            background: var(--blk);
-            color: #fff;
-            font-family: 'Space Mono', monospace;
-            overflow-x: hidden;
-            min-height: 100%;
-        }
+<script>
+/* ============================================================
+   NOBODY CREATIVE — SITE CONFIG
+   ============================================================
+   Everything you need to update lives here.
+   Edit this block. Don't touch anything below the closing
+   "END CONFIG" comment unless you're changing layout/design.
+   ============================================================ */
 
-        /* GRAIN */
-        body::before {
-            content: '';
-            position: fixed; inset: 0;
-            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
-            opacity: 0.3;
-            pointer-events: none;
-            z-index: 900;
-        }
+const CONFIG = {
 
-        /* PHOTO BG */
-        .bg {
-            position: fixed; inset: 0; z-index: 0;
-        }
-        .bg img {
-            width: 100%; height: 100%;
-            object-fit: cover;
-            object-position: center 20%;
-            filter: grayscale(100%) brightness(0.65) contrast(1.1);
-            transition: opacity 1.6s ease;
-        }
-        .bg::after {
-            content: '';
-            position: absolute; inset: 0;
-            background:
-                linear-gradient(to top, rgba(6,6,6,1) 0%, rgba(6,6,6,0.75) 45%, rgba(6,6,6,0.25) 100%),
-                linear-gradient(to right, rgba(6,6,6,0.75) 0%, transparent 65%);
-        }
+  /* ── BRAND ─────────────────────────────────────────────── */
+  brand: {
+    name:     'Nobody Creative',
+    tagline:  'Trust Nobody. Do the work.',
+    location: 'San Antonio, TX',
+    logId:    '9942-X-NOBODY',          // footer flavor text
+  },
 
-        /* LAYOUT */
-        .wrap {
-            position: relative; z-index: 10;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding: 0 56px;
-        }
+  /* ── CONTACT ────────────────────────────────────────────── */
+  contact: {
+    email:     'hirebencampbell@gmail.com',
+    instagram: '@_nobodycreative',
+    igUrl:     'https://instagram.com/_nobodycreative',
+    wellnessUrl: 'https://kylozenzen.github.io/nobody-wellness/',
+  },
 
-        /* NAV */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 34px 0;
-            flex-shrink: 0;
-        }
-        .logo {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 22px;
-            letter-spacing: 0.1em;
-            color: #fff;
-            text-decoration: none;
-        }
-        .logo em { color: var(--y); font-style: normal; }
+  /* ── SEO / META ─────────────────────────────────────────── */
+  meta: {
+    title:       'Nobody Creative | Content Strategy · San Antonio',
+    description: 'Enterprise-level content. Local commitment. One founding price. Built by Nobody.',
+    siteUrl:     'https://nobodycreative.com',
+    ogImage:     'https://images.unsplash.com/photo-1652180126105-da17c5824a0f?q=80&w=1200&auto=format&fit=crop',
+  },
 
-        .status {
-            display: flex; align-items: center; gap: 10px;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.36em;
-            color: rgba(255,255,255,0.3);
-        }
-        .dot {
-            width: 7px; height: 7px;
-            border-radius: 50%;
-            background: var(--y);
-            animation: throb 2s ease-in-out infinite;
-        }
-        @keyframes throb {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50%       { opacity: 0.3; transform: scale(0.6); }
-        }
+  /* ── PHOTOS ─────────────────────────────────────────────── */
+  // Swap any URL for your own image. Keep &fit=crop for consistent framing.
+  photos: {
+    hero: {
+      url: 'https://images.unsplash.com/photo-1652180126105-da17c5824a0f?q=80&w=1800&auto=format&fit=crop',
+      alt: 'Nobody Creative workspace',
+    },
+    guide: {
+      url: 'https://images.unsplash.com/photo-1604514628550-37477afdf4e3?w=900&auto=format&fit=crop&q=80',
+      alt: 'Ben Campbell — Nobody Creative',
+    },
+    banner: {
+      url: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=2000&auto=format&fit=crop&q=80',
+      alt: 'On location production',
+    },
+    // Three cards in the "Every Frame Has a Job" grid
+    shoot: [
+      { url: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&auto=format&fit=crop&q=80', alt: 'Aerial production',         tag: 'Aerial',   sub: 'Drone Production'       },
+      { url: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&auto=format&fit=crop&q=80', alt: 'Brand content',             tag: 'Brand',    sub: 'Cinematic Production'   },
+      { url: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=800&auto=format&fit=crop&q=80',   alt: 'Personal & family content', tag: 'Personal', sub: 'Milestones & Legacy'    },
+    ],
+    closing: {
+      url: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=2000&auto=format&fit=crop&q=80',
+      alt: 'San Antonio',
+    },
+  },
 
-        /* HERO */
-        .hero {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding-bottom: 72px;
-            align-items: center;
-        }
+  /* ── STATS (the four big numbers) ──────────────────────── */
+  stats: [
+    { value: 470, suffix: 'M+', label: 'Impressions'    },
+    { value: 15,  suffix: 'M+', label: 'Interactions'   },
+    { value: 6,   suffix: 'M+', label: 'Followers Built' },
+    { value: 75,  suffix: 'K+', label: 'Monthly Ad Rev'  },
+  ],
 
-        /* TITLE — left aligned, full width */
-        .title {
-            font-family: 'Bebas Neue', sans-serif;
-            line-height: 0.83;
-            letter-spacing: -0.01em;
-            margin-bottom: 44px;
-            align-self: flex-start;
-        }
+  /* ── HERO COPY ──────────────────────────────────────────── */
+  hero: {
+    line1:    'TRUST',
+    line2:    'NOBODY.',
+    tagline:  "You've built something worth talking about. The content just hasn't caught up yet.",
+    ctaPrimary:   "See the $199 Founding Offer",
+    ctaSecondary: "How It Works",
+  },
 
-        /* TRUST — solid white, large, slides from left */
-        .t-trust {
-            display: block;
-            font-size: clamp(100px, 18vw, 270px);
-            color: #ffffff;
-            text-shadow: 0 0 120px rgba(255,255,255,0.08);
-            animation: fromLeft 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s both;
-        }
+  /* ── TICKER ─────────────────────────────────────────────── */
+  // Add or remove lines freely — they loop automatically
+  ticker: [
+    'Posting without a strategy is just noise',
+    'Generic content loses trust faster than silence',
+    'Your competitors are already investing in this',
+    'Great work deserves great content',
+    'You are not the problem — the content is',
+    'Nobody Creative // San Antonio // 2026',
+    'Milestones. Brands. Families. All of it.',
+  ],
 
-        /* NOBODY — yellow, slides from right, fills in */
-        .t-nobody {
-            display: block;
-            font-size: clamp(100px, 18vw, 270px);
-            animation: fromRight 0.9s cubic-bezier(0.16,1,0.3,1) 0.25s both;
-        }
+  /* ── GUIDE SECTION ──────────────────────────────────────── */
+  guide: {
+    sectionLabel: 'Nobody Creative // San Antonio',
+    headline:     '6 Years.\n6 Million Followers.\nNow Yours.',
+    intro:        'Enterprise-level content strategy — built for major brands, now available to San Antonio businesses, families, and anyone with a story worth telling. <strong>No agency markup. No learning curve. Just the work.</strong>',
+    bioFull: [
+      'I\'ve spent 6 years building audiences of <strong>over 6 million followers</strong> and running campaigns generating <strong>$75K+ in monthly ad revenue</strong> for major brands — as a one-person operation.',
+      'That same enterprise-level playbook — strategy, cinematic production, aerial perspective — is now available to everyone. Businesses who want to dominate their market. Families who want to capture their chapter. People with something worth saying.',
+    ],
+    bookingNote: 'Founding business clients and launch-special personal sessions in San Antonio. Limited availability at every tier.',
+  },
 
-        .nw {
-            position: relative;
-            display: inline-block;
-            animation: glitch 7s ease-in-out 2.5s infinite;
-        }
+  /* ── BANNER COPY ────────────────────────────────────────── */
+  banner: {
+    line1:    'Cinematic Production.',
+    line2:    'Built for Every Story.',   // renders as outline text
+    subline:  'Strategy · Video · Drone · Social · Milestones · Legacy',
+  },
 
-        .nw-ghost {
-            display: block;
-            -webkit-text-stroke: 2px rgba(255,255,255,0.1);
-            color: transparent;
-        }
+  /* ── TESTIMONIALS ───────────────────────────────────────── */
+  testimonials: [
+    {
+      quote: 'Daddy made a website!! It has yellow on it. I like yellow. Can we get a dog now?',
+      name:  'Everly C.',
+      role:  'Chief Enthusiasm Officer, The Campbell Household',
+    },
+    {
+      quote: 'He spent three weekends on this. I have no idea what it does. But he seems very happy about it. The yellow is a lot.',
+      name:  'Mrs. Campbell',
+      role:  'Zookeeper. Long-Suffering Supporter of Side Projects.',
+    },
+    {
+      quote: "I showed all my friends. Nobody understood it but everyone agreed it looks very professional. I'm so proud. Call me.",
+      name:  "Ben's Mom",
+      role:  'Original Founding Client. Has Not Actually Paid Yet.',
+    },
+  ],
 
-        .nw-fill {
-            position: absolute; left: 0; top: 0;
-            display: block;
-            color: var(--y);
-            clip-path: inset(0 100% 0 0);
-            animation: sweepIn 1s cubic-bezier(0.77,0,0.18,1) 0.9s forwards;
-            text-shadow: 0 0 80px rgba(250,204,21,0.25);
-        }
+  /* ── OFFER: BUSINESS ────────────────────────────────────── */
+  business: {
+    offerLabel:   'Founding Client Rate',
+    priceDisplay: '$199',
+    priceUnit:    '/ First Month',
+    disclaimer:   "This rate reflects the founding relationship I want to build — not the market rate for this level of production. Slots are limited and this price won't last.",
+    ctaLabel:     'Apply for a Founding Slot →',
+    footnote:     'No commitment until we talk.',
 
-        .nw-shadow {
-            position: absolute; left: 5px; top: 5px;
-            display: block;
-            color: rgba(250,204,21,0.1);
-            z-index: -1;
-        }
+    // Scarcity bar — update slotsClaimed as you fill spots (max: slotsTotal)
+    slotsTotal:   5,
+    slotsClaimed: 3,
 
-        @keyframes fromLeft {
-            from { opacity: 0; transform: translateX(-60px); }
-            to   { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes fromRight {
-            from { opacity: 0; transform: translateX(60px); }
-            to   { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes sweepIn {
-            to { clip-path: inset(0 0% 0 0); }
-        }
-        @keyframes glitch {
-            0%, 87%, 100% { transform: translate(0); filter: none; }
-            89%  { transform: translate(-4px, 1px); filter: hue-rotate(20deg) brightness(1.3); }
-            91%  { transform: translate(4px, -2px); }
-            93%  { transform: translate(-2px, 1px); filter: hue-rotate(-15deg); }
-            95%  { transform: translate(0); filter: none; }
-        }
+    deliverables: [
+      {
+        title: 'Strategy-First Content Audit',
+        desc:  'A 1-hour deep dive into what you have, what\'s missing, and exactly what we build first.',
+      },
+      {
+        title: '12 Cinematic Posts — 3 Per Week',
+        desc:  'High-resolution, professionally edited content built for your platform, voice, and audience.',
+      },
+      {
+        title: 'Aerial Drone Production',
+        desc:  "Cinematic aerial footage that gives your brand a perspective most local competitors simply can't offer.",
+      },
+      {
+        title: 'Full Strategic Direction',
+        desc:  'Captions, hashtag strategy, posting schedule, and a content calendar — done for you, ready to deploy.',
+      },
+    ],
 
-        /* TAGLINE */
-        .tagline {
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-size: clamp(22px, 2.4vw, 32px);
-            color: rgba(255,255,255,0.85);
-            line-height: 1.45;
-            max-width: 560px;
-            margin-bottom: 52px;
-            animation: fadeUp 0.8s ease 0.85s both;
-            text-align: left;
-            align-self: flex-start;
-        }
+    addons: [
+      {
+        title: 'New Website',
+        desc:  'A clean, fast, mobile-first site that actually represents you — built and handed off, no subscriptions.',
+        price: 'From $499 one-time',
+      },
+      {
+        title: 'Social Profile Overhaul',
+        desc:  'Bio rewrites, highlight covers, pinned posts, link-in-bio setup — every platform looking like a brand, not an afterthought.',
+        price: 'From $149 one-time',
+      },
+      {
+        title: 'Full Digital Cleanup',
+        desc:  'Website + social overhaul + Google Business profile + brand consistency audit — one pass, everything aligned.',
+        price: 'From $599 bundled',
+      },
+    ],
+  },
 
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(16px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
+  /* ── OFFER: PERSONAL ────────────────────────────────────── */
+  personal: {
+    launchTag:     'Launch Special',
+    launchHeadline:'First 3 Sessions — On Us.',
+    launchBody:    "We're building our personal portfolio and we want to do it right. You get a full cinematic session at no cost. All we ask is your honest reaction — and permission to share the work.",
 
-        /* WHAT WE BUILD */
-        .what-wrap {
-            margin-bottom: 56px;
-            animation: fadeUp 0.8s ease 1s both;
-            text-align: center;
-        }
+    offerLabel:    'Launch Special Rate',
+    priceDisplay:  'FREE',
+    priceUnit:     '/ First Session',
+    afterLaunch:   'After launch: from $149 / session',
+    disclaimer:    "We're expanding into personal work and want to do it right. Three founding families get a full session at zero cost — in exchange for being part of the story we're building here.",
+    ctaLabel:      'Claim a Free Session →',
+    footnote:      '3 spots only. No catch.',
 
-        .section-label {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.5em;
-            color: var(--y);
-            display: block;
-            margin-bottom: 18px;
-        }
+    // Scarcity — update sessionsClaimed as sessions fill (max: sessionsTotal)
+    sessionsTotal:   3,
+    sessionsClaimed: 0,
 
-        .what-grid {
-            display: grid;
-            grid-template-columns: repeat(4, auto);
-            gap: 2px;
-            width: fit-content;
-            margin: 0 auto;
-        }
+    deliverables: [
+      {
+        title: 'Milestone Coverage',
+        desc:  'Proposals, maternity, anniversaries, birthdays, graduations — the moments worth keeping, captured properly.',
+      },
+      {
+        title: 'Family Legacy Sessions',
+        desc:  'A documentary-style shoot of your family as it is right now — the real, beautiful version worth keeping forever.',
+      },
+      {
+        title: 'Personal Brand & Creator Content',
+        desc:  'Launching something, growing a following, or just ready to show up better — full production kit, brought to you.',
+      },
+      {
+        title: 'Aerial + Edited Digital Gallery',
+        desc:  'Drone footage where it fits, fully edited finals delivered — ready to print, share, frame, or keep forever.',
+      },
+    ],
+  },
 
-        .what-item {
-            background: rgba(6,6,6,0.6);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 18px 24px;
-            position: relative;
-            overflow: hidden;
-            transition: border-color 0.25s, background 0.25s;
-        }
+  /* ── CLOSING QUOTE ──────────────────────────────────────── */
+  closing: {
+    quote: "The businesses that win aren't the best-kept secrets. The families that treasure the most aren't the ones who waited. They're the ones brave enough to be seen.",
+    ctaLabel: "Don't Stay Invisible →",
+  },
 
-        .what-item::after {
-            content: '';
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            height: 2px;
-            background: var(--y);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.3s ease;
-        }
+};
 
-        .what-item:hover {
-            background: rgba(250,204,21,0.06);
-            border-color: rgba(250,204,21,0.3);
-        }
-        .what-item:hover::after { transform: scaleX(1); }
+/* ============================================================
+   END CONFIG — stop editing here unless you know what you're doing
+   ============================================================ */
+</script>
 
-        .what-num {
-            font-size: 10px;
-            color: var(--y);
-            letter-spacing: 0.3em;
-            display: block;
-            margin-bottom: 10px;
-            opacity: 0.6;
-        }
+<!-- ── META (stamped by render()) ── -->
+<title id="meta-title"></title>
+<meta name="description" id="meta-desc">
+<meta property="og:title" id="og-title">
+<meta property="og:description" id="og-desc">
+<meta property="og:image" id="og-image">
+<meta property="og:url" id="og-url">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23060606'/%3E%3Ctext x='2' y='26' font-family='monospace' font-size='22' font-weight='900' fill='%23facc15'%3E_N%3C/text%3E%3C/svg%3E">
 
-        .what-name {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 29px;
-            letter-spacing: 0.06em;
-            color: #fff;
-            display: block;
-            line-height: 1;
-            margin-bottom: 6px;
-        }
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,700&family=Inter:wght@400;700;900&family=Space+Mono:wght@400;700&family=Bebas+Neue&display=swap" rel="stylesheet">
 
-        .what-sub {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.14em;
-            color: rgba(255,255,255,0.4);
-            line-height: 1.5;
-        }
-
-        /* SOCIAL CTA */
-        .social-wrap {
-            animation: fadeUp 0.8s ease 1.15s both;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .social-label {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.46em;
-            color: rgba(255,255,255,0.35);
-            display: block;
-            margin-bottom: 18px;
-        }
-
-        .social-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 16px;
-            background: rgba(6,6,6,0.65);
-            border: 1px solid rgba(250,204,21,0.35);
-            padding: 20px 32px;
-            text-decoration: none;
-            transition: all 0.25s;
-            max-width: 470px;
-            width: 100%;
-            justify-content: center;
-        }
-
-        .social-link:hover {
-            background: rgba(250,204,21,0.08);
-            border-color: var(--y);
-            transform: translateY(-2px);
-        }
-
-        .social-link:hover .social-arrow {
-            letter-spacing: 0.36em;
-        }
-
-        .ig-icon {
-            width: 24px;
-            height: 24px;
-            flex-shrink: 0;
-        }
-
-        .social-handle {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 31px;
-            letter-spacing: 0.06em;
-            color: var(--y);
-            line-height: 1;
-        }
-
-        .social-arrow {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.26em;
-            color: rgba(255,255,255,0.35);
-            margin-left: auto;
-            transition: letter-spacing 0.25s;
-        }
-
-        .social-fine {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.3em;
-            color: rgba(255,255,255,0.18);
-            margin-top: 14px;
-        }
-
-        /* FOOTER */
-        footer {
-            flex-shrink: 0;
-            padding: 24px 0;
-            border-top: 1px solid rgba(255,255,255,0.07);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .foot-left {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .foot-tagline {
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-size: 17px;
-            color: rgba(255,255,255,0.55);
-        }
-
-        .foot-meta {
-            font-size: 9px;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            color: rgba(255,255,255,0.15);
-        }
-
-        .foot-right a {
-            font-size: 9px;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            color: rgba(255,255,255,0.3);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-        .foot-right a:hover { color: var(--y); }
-
-        /* MOBILE */
-        @media (max-width: 700px) {
-            .wrap { padding: 0 26px; }
-            .status { display: none; }
-            .what-grid { grid-template-columns: repeat(2, 1fr); width: 100%; }
-            .what-item { padding: 14px 16px; }
-            footer { flex-direction: column; align-items: flex-start; }
-        }
-    </style>
+<style>
+:root{--y:#facc15;--b:#060606;--fm:'Space Mono',monospace;--fd:'Bebas Neue',sans-serif;--fs:'Cormorant Garamond',serif}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;cursor:crosshair}
+body{background:var(--b);color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+.serif{font-family:var(--fs)}.mono{font-family:var(--fm)}.bebas{font-family:var(--fd)}
+::selection{background:var(--y);color:#000}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)' opacity='0.45'/%3E%3C/svg%3E");background-size:200px;opacity:.25;pointer-events:none;z-index:900}
+#matrix-canvas{position:fixed;inset:0;z-index:890;pointer-events:none;opacity:0;transition:opacity .8s}
+#matrix-canvas.active{opacity:1}
+.nav-blur{background:rgba(6,6,6,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.06)}
+.dot-live{width:6px;height:6px;border-radius:50%;background:var(--y);flex-shrink:0;animation:throb 2s ease-in-out infinite}
+@keyframes throb{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.6)}}
+.btn-y{background:var(--y);color:#000;font-weight:900;font-family:var(--fm);text-transform:uppercase;letter-spacing:.08em;font-size:11px;padding:14px 28px;transition:all .2s;display:inline-block;text-decoration:none;white-space:nowrap;cursor:crosshair;border:none}
+.btn-y:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(250,204,21,.35)}
+.btn-ghost{border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.65);font-family:var(--fm);font-size:10px;text-transform:uppercase;letter-spacing:.25em;padding:14px 22px;transition:all .25s;display:inline-block;text-decoration:none;background:rgba(6,6,6,.5);cursor:crosshair}
+.btn-ghost:hover{border-color:var(--y);color:var(--y)}
+.hero-section{position:relative;min-height:100vh;display:flex;flex-direction:column;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center 20%;filter:grayscale(100%) brightness(.55) contrast(1.15)}
+.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(6,6,6,1) 0%,rgba(6,6,6,.7) 45%,rgba(6,6,6,.15) 100%),linear-gradient(to right,rgba(6,6,6,.8) 0%,transparent 55%)}
+.hero-inner{position:relative;z-index:10;display:flex;flex-direction:column;flex:1;padding:0 52px}
+.title-block{flex:1;display:flex;flex-direction:column;justify-content:center;padding-top:110px;padding-bottom:32px}
+.hn-title{font-family:'Bebas Neue',sans-serif;line-height:.83;letter-spacing:-.01em;margin-bottom:28px}
+.t-trust{display:block;font-size:clamp(68px,14vw,210px);color:#fff;text-shadow:0 0 120px rgba(255,255,255,.08);animation:fromLeft .9s cubic-bezier(.16,1,.3,1) .1s both}
+.t-nobody{display:block;font-size:clamp(68px,14vw,210px);animation:fromRight .9s cubic-bezier(.16,1,.3,1) .25s both}
+.nw{position:relative;display:inline-block;animation:glitch 7s ease-in-out 2.5s infinite}
+.nw-ghost{display:block;-webkit-text-stroke:2px rgba(255,255,255,.08);color:transparent}
+.nw-fill{position:absolute;left:0;top:0;display:block;color:var(--y);clip-path:inset(0 100% 0 0);animation:sweepIn 1s cubic-bezier(.77,0,.18,1) .9s forwards;text-shadow:0 0 80px rgba(250,204,21,.2)}
+.nw-shadow{position:absolute;left:5px;top:5px;display:block;color:rgba(250,204,21,.08);z-index:-1}
+@keyframes fromLeft{from{opacity:0;transform:translateX(-60px)}to{opacity:1;transform:translateX(0)}}
+@keyframes fromRight{from{opacity:0;transform:translateX(60px)}to{opacity:1;transform:translateX(0)}}
+@keyframes sweepIn{to{clip-path:inset(0 0% 0 0)}}
+@keyframes glitch{0%,87%,100%{transform:translate(0);filter:none}89%{transform:translate(-4px,1px);filter:hue-rotate(20deg) brightness(1.3)}91%{transform:translate(4px,-2px)}93%{transform:translate(-2px,1px);filter:hue-rotate(-15deg)}95%{transform:translate(0);filter:none}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.hero-text-box{background:rgba(6,6,6,.6);backdrop-filter:blur(10px);border-left:2px solid rgba(250,204,21,.35);padding:22px 28px;display:inline-block;max-width:580px;animation:fadeUp .8s ease .85s both}
+.hero-tagline{font-family:var(--fs);font-style:italic;font-size:clamp(18px,2.1vw,27px);color:#fff;line-height:1.5;margin:0}
+.hero-ctas{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:24px}
+.ticker-outer{overflow:hidden}
+.ticker-inner{display:flex;gap:48px;white-space:nowrap;animation:tick 30s linear infinite}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.tick-item{font-family:var(--fm);font-size:10px;text-transform:uppercase;letter-spacing:.35em;color:rgba(0,0,0,.75);font-weight:700;display:flex;align-items:center;gap:14px;flex-shrink:0}
+.tick-dot{width:5px;height:5px;background:rgba(0,0,0,.5);border-radius:50%}
+.img-gritty{filter:grayscale(100%) contrast(120%) brightness(75%);transition:filter .7s cubic-bezier(.19,1,.22,1),transform .7s cubic-bezier(.19,1,.22,1)}
+.img-card:hover .img-gritty{filter:grayscale(0%) contrast(108%) brightness(88%);transform:scale(1.04)}
+.sec-label{font-family:var(--fm);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.45em;color:var(--y);display:block;margin-bottom:16px}
+.body-copy{font-size:16px;line-height:1.8;color:rgba(255,255,255,.88)}
+.body-copy strong{color:#fff;font-weight:700}
+.shoot-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+.shoot-cell{position:relative;overflow:hidden;aspect-ratio:4/5}
+.shoot-cell img{width:100%;height:100%;object-fit:cover;filter:grayscale(100%) contrast(120%) brightness(70%);transition:filter .6s,transform .6s;display:block}
+.shoot-cell:hover img{filter:grayscale(0%) contrast(108%) brightness(88%);transform:scale(1.04)}
+.shoot-label{position:absolute;bottom:0;left:0;right:0;padding:40px 16px 16px;background:linear-gradient(to top,rgba(6,6,6,.9),transparent)}
+.shoot-label .tag{background:var(--y);color:#000;font-family:var(--fm);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.3em;padding:3px 8px;display:inline-block;margin-bottom:6px}
+.shoot-label .sub{font-size:11px;font-family:var(--fm);text-transform:uppercase;letter-spacing:.2em;color:rgba(255,255,255,.55)}
+.testi{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:28px;transition:border-color .25s}
+.testi:hover{border-color:rgba(250,204,21,.3)}
+.testi-quote{font-family:var(--fs);font-style:italic;font-size:19px;line-height:1.65;color:rgba(255,255,255,.9);margin-bottom:20px}
+.testi-name{font-family:var(--fm);font-size:10px;text-transform:uppercase;letter-spacing:.4em;color:var(--y);font-weight:700}
+.testi-role{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.25em;color:rgba(255,255,255,.3);margin-top:4px}
+.star{color:var(--y);font-size:13px;letter-spacing:3px;margin-bottom:14px;display:block}
+.offer-section{background:#fff;color:#000}
+.offer-toggle-wrap{display:flex;align-items:stretch;position:relative;border:3px solid #000;background:#fff;max-width:540px;margin:0 auto;overflow:hidden}
+.offer-tab{flex:1;padding:16px 20px;font-family:var(--fm);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.18em;background:transparent;border:none;cursor:crosshair;color:#aaa;transition:color .3s;position:relative;z-index:2;display:flex;align-items:center;justify-content:center;gap:8px;line-height:1.3}
+.offer-tab.active{color:#fff}
+.offer-tab .tab-icon{font-size:11px;transition:transform .3s}
+.offer-tab.active .tab-icon{transform:scale(1.2)}
+.offer-toggle-pill{position:absolute;top:0;bottom:0;left:0;width:50%;background:#000;z-index:1;transition:transform .4s cubic-bezier(.16,1,.3,1)}
+.offer-toggle-pill.right{transform:translateX(100%)}
+.offer-panel{display:block}
+.offer-panel-hidden{display:none}
+.offer-left{background:#0a0a0a}
+.dlv{border-bottom:1px solid rgba(255,255,255,.08);padding:20px 0;display:flex;align-items:flex-start;gap:16px}
+.dlv:last-child{border-bottom:none}
+.dlv-num{background:var(--y);color:#000;font-family:var(--fm);font-size:10px;font-weight:700;padding:4px 8px;flex-shrink:0;margin-top:2px}
+.dlv-title{font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;color:#fff;line-height:1.3}
+.dlv-desc{font-size:13px;color:rgba(255,255,255,.6);margin-top:5px;line-height:1.65}
+.addon-row{display:flex;align-items:flex-start;gap:16px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.addon-row:last-child{border-bottom:none}
+.addon-badge{background:rgba(250,204,21,.15);border:1px solid rgba(250,204,21,.3);color:var(--y);font-family:var(--fm);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.3em;padding:3px 8px;flex-shrink:0;margin-top:2px;white-space:nowrap}
+.addon-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:rgba(255,255,255,.85)}
+.addon-desc{font-size:12px;color:rgba(255,255,255,.4);margin-top:3px;line-height:1.5}
+.addon-price{font-family:var(--fm);font-size:10px;font-weight:700;color:var(--y);margin-top:4px;letter-spacing:.1em}
+.offer-right{background:#fff}
+.offer-label{font-family:var(--fm);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4em;color:#555;display:block;margin-bottom:10px}
+.offer-price-unit{font-family:var(--fm);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3em;color:#888}
+.offer-disclaimer{font-size:14px;color:#333;line-height:1.7;border-top:1px solid #e5e5e5;padding-top:20px;margin-top:20px}
+.offer-note{font-family:var(--fm);font-size:10px;text-transform:uppercase;letter-spacing:.25em;color:#888;margin-top:10px;display:block}
+.scarcity-bar-wrap{background:#f0f0f0;height:4px;width:100%;margin:16px 0 8px}
+.scarcity-bar-fill{background:var(--y);height:100%;width:0%;transition:width 1.5s cubic-bezier(.19,1,.22,1)}
+.scarcity-text{font-family:var(--fm);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.3em;color:#222;display:flex;justify-content:space-between}
+.scarcity-text .danger{color:#e03b3b}
+#price-display{cursor:default;transition:color .1s;font-family:'Bebas Neue',sans-serif;font-size:clamp(5rem,13vw,9.5rem);line-height:1;letter-spacing:-.02em;color:#000}
+#price-display.scrambling{color:var(--y);opacity:.7}
+.personal-launch-banner{background:#000;padding:28px 32px 20px;border:3px solid #000;border-bottom:none}
+.plb-inner{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap}
+.plb-tag{display:inline-block;background:var(--y);color:#000;font-family:var(--fm);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.35em;padding:4px 10px;margin-bottom:10px;animation:throb 3s ease-in-out infinite}
+.plb-headline{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,5vw,3.5rem);line-height:.95;letter-spacing:-.01em;color:#fff;margin-bottom:10px}
+.plb-sub{font-size:13px;color:rgba(255,255,255,.6);line-height:1.65;max-width:420px}
+.plb-counter-wrap{text-align:center;flex-shrink:0;padding-top:4px}
+.plb-counter-num{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,8vw,6rem);line-height:1;color:var(--y);letter-spacing:-.02em}
+.plb-counter-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.3em;color:rgba(255,255,255,.4);line-height:1.5;margin-top:4px}
+.plb-bar-wrap{background:rgba(255,255,255,.1);height:3px;margin-top:20px}
+.plb-bar-fill{background:var(--y);height:100%;width:0%;transition:width 1.5s cubic-bezier(.19,1,.22,1)}
+.plb-bar-labels{display:flex;justify-content:space-between;font-family:var(--fm);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.25em;color:rgba(255,255,255,.3);margin-top:6px}
+#slot-overlay{position:fixed;inset:0;z-index:9000;background:rgba(6,6,6,0);pointer-events:none;transition:background .4s}
+#slot-overlay.open{background:rgba(6,6,6,.88);pointer-events:all}
+#slot-drawer{position:fixed;bottom:0;left:0;right:0;z-index:9001;background:#fff;color:#000;border-top:4px solid var(--y);transform:translateY(100%);transition:transform .55s cubic-bezier(.16,1,.3,1);max-height:92vh;overflow-y:auto}
+#slot-drawer.open{transform:translateY(0)}
+.drawer-inner{max-width:680px;margin:0 auto;padding:48px 32px 56px}
+.drawer-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px}
+.drawer-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,7vw,4rem);line-height:.9;letter-spacing:-.01em;color:#000}
+.drawer-close{background:none;border:none;cursor:crosshair;font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.3em;color:#888;padding:8px 0;transition:color .2s;flex-shrink:0;margin-top:6px}
+.drawer-close:hover{color:#000}
+.drawer-scarcity{background:#000;color:#fff;font-family:'Space Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.35em;padding:10px 16px;margin-bottom:28px;display:flex;align-items:center;gap:10px}
+.drawer-dot{width:6px;height:6px;border-radius:50%;background:var(--y);animation:throb 2s infinite;flex-shrink:0}
+.field-group{margin-bottom:20px}
+.field-label{display:block;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.35em;color:#555;margin-bottom:8px}
+.field-req{color:var(--y)}
+.field-input{width:100%;border:1px solid #d0d0d0;background:#fafafa;font-family:'Inter',sans-serif;font-size:15px;color:#000;padding:14px 16px;outline:none;transition:border-color .2s,background .2s;-webkit-appearance:none;border-radius:0}
+.field-input:focus{border-color:#000;background:#fff}
+.field-input::placeholder{color:#bbb}
+textarea.field-input{resize:vertical;min-height:90px}
+select.field-input{cursor:crosshair}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.drawer-submit{width:100%;background:#000;color:var(--y);font-family:'Space Mono',monospace;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.15em;padding:18px 28px;border:none;cursor:crosshair;transition:all .2s;margin-top:8px}
+.drawer-submit:hover{background:var(--y);color:#000;box-shadow:0 10px 28px rgba(250,204,21,.3)}
+.drawer-subtext{font-family:'Space Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.25em;color:#aaa;text-align:center;margin-top:14px}
+#drawer-success{display:none;text-align:center;padding:20px 0}
+#drawer-success .success-mark{font-size:3rem;margin-bottom:16px;display:block}
+#drawer-success h3{font-family:'Bebas Neue',sans-serif;font-size:3rem;letter-spacing:-.01em;color:#000;margin-bottom:8px}
+#drawer-success p{font-size:14px;color:#555;line-height:1.7;max-width:400px;margin:0 auto}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:#000}
+::-webkit-scrollbar-thumb{background:#1a1a1a}
+::-webkit-scrollbar-thumb:hover{background:var(--y)}
+@media(max-width:700px){
+  .hero-inner{padding:0 20px}
+  .t-trust,.t-nobody{font-size:clamp(60px,17vw,110px)}
+  .hero-text-box{padding:16px 18px;max-width:100%}
+  .hero-tagline{font-size:17px}
+  .hero-ctas{flex-direction:column;align-items:flex-start;gap:10px}
+  .hero-ctas .btn-y,.hero-ctas .btn-ghost{width:100%;text-align:center}
+  .shoot-grid{grid-template-columns:1fr 1fr}
+  .shoot-grid .shoot-cell:last-child{display:none}
+  .shoot-cell{max-height:260px}
+  .field-row{grid-template-columns:1fr}
+  .drawer-inner{padding:32px 20px 48px}
+  .plb-inner{flex-direction:column}
+}
+</style>
 </head>
 <body>
 
-<div class="bg">
-    <img id="bgImg"
-         src="https://images.unsplash.com/photo-1652180126105-da17c5824a0f?q=80&w=1800&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-         alt="">
+<!-- ═══ NETLIFY FORM DETECTION (hidden — do not remove) ═══ -->
+<!-- Netlify's build bot reads this at deploy time.           -->
+<!-- The visible form in the drawer submits to this via fetch. -->
+<form name="slot-application" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="hidden" name="form-name" value="slot-application">
+  <input name="bot-field">
+  <input name="context">
+  <input name="name">
+  <input name="business">
+  <input name="email">
+  <input name="phone">
+  <input name="type">
+  <input name="goal">
+  <input name="time">
+</form>
+
+<canvas id="matrix-canvas"></canvas>
+
+<!-- ═══ MODAL ═══ -->
+<div id="slot-overlay" role="dialog" aria-modal="true" aria-hidden="true"></div>
+<div id="slot-drawer" aria-hidden="true">
+  <div class="drawer-inner">
+    <div class="drawer-header">
+      <div class="drawer-title" id="drawer-title-el">Claim Your<br>Founding Slot.</div>
+      <button class="drawer-close" id="drawer-close-btn">✕ Close</button>
+    </div>
+    <div class="drawer-scarcity">
+      <div class="drawer-dot"></div>
+      <span id="drawer-scarcity-text"></span>
+    </div>
+    <div id="drawer-form-wrap">
+      <div class="field-row">
+        <div class="field-group">
+          <label class="field-label" for="f-name">Your Name <span class="field-req">*</span></label>
+          <input class="field-input" type="text" id="f-name" placeholder="First Last" autocomplete="name">
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="f-biz" id="f-biz-label">Business Name <span class="field-req">*</span></label>
+          <input class="field-input" type="text" id="f-biz" placeholder="Your brand or company">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-group">
+          <label class="field-label" for="f-email">Email <span class="field-req">*</span></label>
+          <input class="field-input" type="email" id="f-email" placeholder="you@yourbrand.com" autocomplete="email">
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="f-phone">Phone (optional)</label>
+          <input class="field-input" type="tel" id="f-phone" placeholder="(210) 555-0100" autocomplete="tel">
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="f-type" id="f-type-label">What kind of business? <span class="field-req">*</span></label>
+        <select class="field-input" id="f-type">
+          <option value="" disabled selected>Select a category</option>
+          <optgroup label="Business" id="opts-biz">
+            <option>Restaurant / Food &amp; Beverage</option>
+            <option>Retail / Product Brand</option>
+            <option>Service Business</option>
+            <option>Real Estate</option>
+            <option>Health &amp; Fitness</option>
+            <option>Hospitality / Events</option>
+            <option>Arts / Entertainment</option>
+            <option>Non-Profit / Community</option>
+            <option>Other Business</option>
+          </optgroup>
+          <optgroup label="Personal" id="opts-personal" style="display:none">
+            <option>Milestone Event (proposal, anniversary, maternity…)</option>
+            <option>Family Legacy Session</option>
+            <option>Personal Brand / Creator</option>
+            <option>Other Personal</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="f-goal">What do you most want content to do for you?</label>
+        <textarea class="field-input" id="f-goal" placeholder="e.g. Get more foot traffic, grow my Instagram, document our family this year…"></textarea>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="f-time">Best time to connect</label>
+        <select class="field-input" id="f-time">
+          <option value="" disabled selected>Select a window</option>
+          <option>Weekday mornings (8am–12pm)</option>
+          <option>Weekday afternoons (12pm–5pm)</option>
+          <option>Weekday evenings (5pm–8pm)</option>
+          <option>Weekends</option>
+          <option>Anytime — just reach out</option>
+        </select>
+      </div>
+      <button class="drawer-submit" id="drawer-submit-btn">Submit My Application →</button>
+      <p class="drawer-subtext">No commitment. No spam. Just a conversation.</p>
+    </div>
+    <div id="drawer-success">
+      <span class="success-mark">◈</span>
+      <h3>Transmission Received.</h3>
+      <p>You're in the queue. Expect a reply within 24 hours — usually much faster. You're making a smart move.</p>
+      <p style="margin-top:14px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:#aaa">— Nobody Creative // San Antonio</p>
+    </div>
+  </div>
 </div>
 
-<div class="wrap">
+<!-- NAV -->
+<nav class="fixed top-0 w-full z-[100] px-6 md:px-10 py-4 flex justify-between items-center nav-blur">
+  <div>
+    <div class="bebas text-xl md:text-2xl tracking-tight uppercase leading-none">
+      <span class="text-yellow-400" id="logo-underscore" style="cursor:crosshair">_</span><span id="nav-brand-name"></span><span class="text-yellow-400">.</span>
+    </div>
+    <div class="flex items-center gap-2 mt-1">
+      <div class="dot-live"></div>
+      <span class="mono text-[8px] uppercase tracking-[.4em] text-white/30" id="nav-location"></span>
+    </div>
+  </div>
+  <button class="btn-y py-2.5 px-6 text-[10px]" onclick="openSlotDrawer('biz')">Claim Your Slot</button>
+</nav>
 
-    <!-- NAV -->
-    <nav>
-        <a href="#" class="logo"><em>_</em>Nobody Creative.</a>
-        <div class="status">
-            <div class="dot"></div>
-            Building in Public — San Antonio, TX
+<!-- HERO -->
+<section class="hero-section">
+  <div class="hero-bg"><img id="hero-img" src="" alt=""></div>
+  <div class="hero-inner">
+    <div class="title-block">
+      <h1 class="hn-title">
+        <span class="t-trust" id="hero-line1"></span>
+        <span class="t-nobody">
+          <span class="nw">
+            <span class="nw-shadow" aria-hidden="true" id="hero-line2-shadow"></span>
+            <span class="nw-ghost" id="hero-line2-ghost"></span>
+            <span class="nw-fill"  aria-hidden="true" id="hero-line2-fill"></span>
+          </span>
+        </span>
+      </h1>
+      <div class="hero-text-box">
+        <p class="hero-tagline serif" id="hero-tagline"></p>
+        <div class="hero-ctas">
+          <button class="btn-y px-8 py-4" onclick="openSlotDrawer('biz')" id="hero-cta-primary"></button>
+          <a href="#guide" class="btn-ghost" id="hero-cta-secondary"></a>
         </div>
-    </nav>
+      </div>
+    </div>
+  </div>
+  <div class="relative z-10 pb-8 flex justify-center">
+    <svg class="w-5 h-5 animate-bounce opacity-25" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/>
+    </svg>
+  </div>
+</section>
 
-    <!-- HERO -->
-    <main class="hero">
-
-        <!-- TITLE -->
-        <h1 class="title">
-            <span class="t-trust">TRUST</span>
-            <span class="t-nobody">
-                <span class="nw">
-                    <span class="nw-shadow" aria-hidden="true">NOBODY.</span>
-                    <span class="nw-ghost">NOBODY.</span>
-                    <span class="nw-fill"  aria-hidden="true">NOBODY.</span>
-                </span>
-            </span>
-        </h1>
-
-        <!-- TAGLINE -->
-        <p class="tagline">
-            "Built by Nobody. For everybody who's tired of everything else."
-        </p>
-
-        <!-- WHAT WE BUILD -->
-        <div class="what-wrap">
-            <span class="section-label">What we build</span>
-            <div class="what-grid">
-                <div class="what-item">
-                    <span class="what-num">01</span>
-                    <span class="what-name">Wellness</span>
-                    <span class="what-sub">Apps for<br>the resilient</span>
-                </div>
-                <div class="what-item">
-                    <span class="what-num">02</span>
-                    <span class="what-name">Marketer</span>
-                    <span class="what-sub">Tools built<br>different</span>
-                </div>
-                <div class="what-item">
-                    <span class="what-num">03</span>
-                    <span class="what-name">Games</span>
-                    <span class="what-sub">Bad decisions.<br>Fun results.</span>
-                </div>
-                <div class="what-item">
-                    <span class="what-num">04</span>
-                    <span class="what-name">Content</span>
-                    <span class="what-sub">For real<br>businesses</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- SOCIAL CTA -->
-        <div class="social-wrap">
-            <span class="social-label">Follow for updates — we're building in public</span>
-            <a class="social-link"
-               href="https://instagram.com/_nobodycreative"
-               target="_blank"
-               rel="noopener noreferrer">
-
-                <!-- Instagram icon (inline SVG — no dependency) -->
-                <svg class="ig-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color:rgba(255,255,255,0.5)">
-                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-                    <circle cx="12" cy="12" r="4.5"/>
-                    <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
-                </svg>
-
-                <span class="social-handle">@_nobodycreative</span>
-                <span class="social-arrow">Follow →</span>
-            </a>
-            <div class="social-fine">Instagram — updates drop here first</div>
-        </div>
-
-    </main>
-
-    <!-- FOOTER -->
-    <footer>
-        <div class="foot-left">
-            <span class="foot-tagline">"Trust Nobody. Do the work."</span>
-            <span class="foot-meta">© 2026 Nobody Creative — San Antonio, TX — LOG_ID: 9942-X-NOBODY</span>
-        </div>
-        <div class="foot-right">
-            <a href="mailto:hirebencampbell@gmail.com">hirebencampbell@gmail.com</a>
-        </div>
-    </footer>
-
+<!-- TICKER -->
+<div class="bg-yellow-400 py-4 ticker-outer">
+  <div class="ticker-inner" id="ticker-inner"></div>
 </div>
+
+<!-- GUIDE -->
+<section id="guide" class="py-20 px-6 md:px-10 bg-[#060606] border-b border-white/5">
+  <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
+    <div class="img-card group relative max-w-sm mx-auto md:mx-0">
+      <div class="relative overflow-hidden aspect-[4/5] bg-neutral-900 border border-white/10">
+        <img id="guide-img" src="" alt="" class="img-gritty w-full h-full object-cover">
+        <div class="absolute inset-0 bg-black/25 group-hover:bg-transparent transition-all duration-500"></div>
+        <div class="absolute bottom-4 left-4 bg-yellow-400 text-black px-3 py-1 font-black uppercase text-[10px] tracking-widest mono">THE GUIDE</div>
+      </div>
+    </div>
+    <div class="reveal-content">
+      <span class="sec-label" id="guide-label"></span>
+      <h2 class="bebas text-5xl md:text-6xl uppercase tracking-tighter leading-none mb-5" id="guide-headline"></h2>
+      <p class="body-copy mb-6" id="guide-intro"></p>
+      <div class="mb-6">
+        <button id="bio-toggle" class="flex items-center gap-3 mono text-[10px] uppercase tracking-widest text-yellow-400 font-bold hover:text-white transition-colors" aria-expanded="false">
+          <span id="bio-toggle-label">+ The Full Story</span>
+        </button>
+        <div id="bio-expand" style="max-height:0;overflow:hidden;transition:max-height .45s cubic-bezier(.4,0,.2,1)">
+          <div class="mt-4 space-y-3 body-copy border-l-2 border-white/10 pl-5" id="bio-full"></div>
+        </div>
+      </div>
+      <div class="border-l-2 border-yellow-400 bg-white/5 p-5">
+        <p class="mono text-[11px] font-bold uppercase text-yellow-400 tracking-widest mb-1">Currently Booking</p>
+        <p class="text-[14px] text-white/70 leading-relaxed" id="guide-booking"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BANNER -->
+<div class="relative overflow-hidden border-y border-white/5" style="height:340px">
+  <img id="banner-img" src="" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(100%) contrast(120%) brightness(65%)">
+  <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/30 to-black/60"></div>
+  <div class="absolute inset-0 flex items-center px-10 md:px-16 z-10">
+    <div>
+      <p class="bebas text-4xl md:text-6xl leading-tight">
+        <span id="banner-line1"></span><br>
+        <span id="banner-line2" style="-webkit-text-stroke:1.5px rgba(255,255,255,.25);color:transparent"></span>
+      </p>
+      <p class="mono text-[10px] uppercase tracking-widest text-white/40 mt-3" id="banner-subline"></p>
+    </div>
+  </div>
+</div>
+
+<!-- PROOF -->
+<section id="proof" class="py-20 px-6 md:px-10 bg-black border-b border-white/5">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+      <div>
+        <span class="sec-label">[ Intel Verified ]</span>
+        <h2 class="bebas text-5xl md:text-6xl uppercase tracking-tighter leading-none">By the Numbers.</h2>
+      </div>
+      <p class="mono text-[11px] text-white/40 text-right leading-loose uppercase">6 years of deployment data.<br>Enterprise brands. Real results.<br>Now available to you.</p>
+    </div>
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-0 border border-white/10 overflow-hidden" id="stats-grid"></div>
+  </div>
+</section>
+
+<!-- SHOOT GRID -->
+<section class="py-20 px-6 md:px-10 bg-[#060606] border-b border-white/5">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row justify-between items-end mb-10 gap-4">
+      <div>
+        <span class="sec-label">[ The Production ]</span>
+        <h2 class="bebas text-5xl md:text-6xl uppercase tracking-tighter leading-none">Every Frame<br>Has a Job.</h2>
+      </div>
+      <p class="mono text-[11px] text-white/35 text-right leading-loose uppercase max-w-xs">Hover to see in colour.</p>
+    </div>
+    <div class="shoot-grid" id="shoot-grid"></div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="py-20 px-6 md:px-10 bg-black border-b border-white/5">
+  <div class="max-w-6xl mx-auto">
+    <div class="flex flex-col md:flex-row justify-between items-end mb-10 gap-4">
+      <div>
+        <span class="sec-label">[ Client Reviews ]</span>
+        <h2 class="bebas text-5xl md:text-6xl uppercase tracking-tighter leading-none">Don't Take<br>Our Word For It.</h2>
+      </div>
+      <p class="mono text-[10px] text-white/25 uppercase tracking-widest text-right">* Verified industry professionals</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 reveal-content" id="testi-grid"></div>
+  </div>
+</section>
+
+<!-- OFFER -->
+<section id="offer" class="offer-section py-20 px-6 md:px-10">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-10">
+      <span class="mono text-[11px] font-bold uppercase tracking-[.4em] mb-3 block" style="color:#555">The Founding Offer</span>
+      <h2 class="bebas text-6xl md:text-9xl uppercase tracking-tighter leading-none" style="color:#000">The Deployment.</h2>
+      <p class="serif italic text-xl md:text-3xl mt-3" style="color:#444">"Cinematic content — for brands and the people behind them."</p>
+    </div>
+    <div class="offer-toggle-wrap">
+      <button class="offer-tab active" id="tab-biz" onclick="switchOfferTab('biz')"><span class="tab-icon">◈</span> For Business</button>
+      <div class="offer-toggle-pill" id="toggle-pill"></div>
+      <button class="offer-tab" id="tab-personal" onclick="switchOfferTab('personal')"><span class="tab-icon">◇</span> For Individuals &amp; Families</button>
+    </div>
+
+    <!-- BUSINESS PANEL -->
+    <div class="offer-panel" id="panel-biz">
+      <div class="grid grid-cols-1 md:grid-cols-2" style="border:3px solid #000">
+        <div class="offer-left p-10 md:p-12" style="border-bottom:3px solid #000">
+          <h3 class="bebas text-4xl uppercase mb-1 tracking-tight" style="color:#fff">What You Get</h3>
+          <p class="mono text-[10px] uppercase tracking-widest mb-8" style="color:rgba(255,255,255,.4)">Everything needed to look like the brand you are.</p>
+          <div id="biz-deliverables"></div>
+          <div style="margin-top:28px;padding-top:24px;border-top:1px solid rgba(250,204,21,.2)">
+            <p class="mono text-[9px] uppercase font-bold tracking-widest mb-4" style="color:rgba(250,204,21,.6)">▸ Available Add-Ons</p>
+            <div id="biz-addons"></div>
+          </div>
+        </div>
+        <div class="offer-right p-10 md:p-12 flex flex-col justify-center items-center text-center">
+          <span class="offer-label" id="biz-offer-label"></span>
+          <div id="price-display"></div>
+          <span class="offer-price-unit" id="biz-price-unit"></span>
+          <div style="width:100%;max-width:320px;margin:24px auto 0">
+            <div class="scarcity-bar-wrap"><div class="scarcity-bar-fill" id="scarcity-fill"></div></div>
+            <div class="scarcity-text" id="biz-scarcity-text"></div>
+          </div>
+          <div class="offer-disclaimer" style="max-width:320px" id="biz-disclaimer"></div>
+          <button class="btn-y" onclick="openSlotDrawer('biz')" id="biz-cta" style="width:100%;max-width:320px;padding:18px 28px;font-size:13px;margin-top:24px;text-align:center"></button>
+          <span class="offer-note" id="biz-footnote"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PERSONAL PANEL -->
+    <div class="offer-panel offer-panel-hidden" id="panel-personal">
+      <div class="personal-launch-banner">
+        <div class="plb-inner">
+          <div>
+            <span class="plb-tag" id="plb-tag"></span>
+            <p class="plb-headline" id="plb-headline"></p>
+            <p class="plb-sub" id="plb-sub"></p>
+          </div>
+          <div class="plb-counter-wrap">
+            <div class="plb-counter-num" id="plb-counter-num"></div>
+            <div class="plb-counter-label">free sessions<br>remaining</div>
+          </div>
+        </div>
+        <div class="plb-bar-wrap"><div class="plb-bar-fill" id="personal-scarcity-fill"></div></div>
+        <div class="plb-bar-labels" id="plb-bar-labels"></div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2" style="border:3px solid #000;border-top:none">
+        <div class="offer-left p-10 md:p-12" style="border-bottom:3px solid #000">
+          <h3 class="bebas text-4xl uppercase mb-1 tracking-tight" style="color:#fff">Every Moment Deserves This.</h3>
+          <p class="mono text-[10px] uppercase tracking-widest mb-8" style="color:rgba(255,255,255,.4)">Cinematic quality. No studio. Just life, made beautiful.</p>
+          <div id="personal-deliverables"></div>
+        </div>
+        <div class="offer-right p-10 md:p-12 flex flex-col justify-center items-center text-center">
+          <span class="offer-label" id="personal-offer-label"></span>
+          <div class="bebas leading-none tracking-tighter" style="font-size:clamp(4rem,10vw,7rem);color:#000;line-height:1" id="personal-price-display"></div>
+          <span class="offer-price-unit" id="personal-price-unit"></span>
+          <p class="mono text-[10px] uppercase tracking-widest" style="color:#888;margin-top:12px" id="personal-after-launch"></p>
+          <div class="offer-disclaimer" style="max-width:320px" id="personal-disclaimer"></div>
+          <button class="btn-y" onclick="openSlotDrawer('personal')" id="personal-cta" style="width:100%;max-width:320px;padding:18px 28px;font-size:13px;margin-top:24px;text-align:center;background:#000;color:#facc15"></button>
+          <span class="offer-note" id="personal-footnote"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section class="relative py-40 px-6 flex items-center justify-center overflow-hidden border-t border-white/5">
+  <img id="closing-img" src="" alt="" class="absolute inset-0 w-full h-full object-cover" style="filter:grayscale(30%) brightness(.55)">
+  <div class="absolute inset-0 bg-black/40"></div>
+  <div class="max-w-3xl mx-auto relative z-10 text-center reveal-content">
+    <h2 class="serif text-4xl md:text-5xl lg:text-6xl italic leading-tight mb-10 text-white" id="closing-quote"></h2>
+    <button class="btn-y px-12 py-5" onclick="openSlotDrawer('biz')" id="closing-cta"></button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="py-16 px-6 md:px-10 bg-black border-t border-white/10">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-end gap-10">
+    <div>
+      <div class="bebas text-3xl uppercase tracking-tight mb-2">
+        <span class="text-yellow-400">_</span><span id="footer-brand-name"></span><span class="text-yellow-400">.</span>
+      </div>
+      <p class="serif italic text-[15px] text-white/35 mb-2" id="footer-tagline"></p>
+      <div class="mono text-[9px] text-white/20 uppercase tracking-widest leading-relaxed" id="footer-meta"></div>
+    </div>
+    <div class="flex flex-col gap-2 mono text-[10px] uppercase font-bold text-left md:text-right" id="footer-links"></div>
+  </div>
+</footer>
 
 <script>
-    // Single fixed background image — no cycling
-    void 0;
-</script>
+/* ══════════════════════════════════════════════
+   RENDER — stamps CONFIG values into the DOM
+══════════════════════════════════════════════ */
+(function render() {
+  const C = CONFIG;
 
+  // ── Meta ──
+  document.getElementById('meta-title').textContent     = C.meta.title;
+  document.getElementById('meta-desc').content          = C.meta.description;
+  document.getElementById('og-title').content           = C.meta.title;
+  document.getElementById('og-desc').content            = C.meta.description;
+  document.getElementById('og-image').content           = C.meta.ogImage;
+  document.getElementById('og-url').content             = C.meta.siteUrl;
+  document.title = C.meta.title;
+
+  // ── Nav ──
+  document.getElementById('nav-brand-name').textContent = C.brand.name;
+  document.getElementById('nav-location').textContent   = C.brand.location;
+
+  // ── Hero ──
+  const hi = document.getElementById('hero-img');
+  hi.src = C.photos.hero.url; hi.alt = C.photos.hero.alt;
+  document.getElementById('hero-line1').textContent        = C.hero.line1;
+  ['hero-line2-shadow','hero-line2-ghost','hero-line2-fill'].forEach(id =>
+    document.getElementById(id).textContent = C.hero.line2);
+  document.getElementById('hero-tagline').textContent      = C.hero.tagline;
+  document.getElementById('hero-cta-primary').textContent  = C.hero.ctaPrimary;
+  document.getElementById('hero-cta-secondary').textContent= C.hero.ctaSecondary;
+
+  // ── Ticker (doubled for seamless loop) ──
+  const ticker = document.getElementById('ticker-inner');
+  const items  = [...C.ticker, ...C.ticker];
+  ticker.innerHTML = items.map(t =>
+    `<div class="tick-item"><div class="tick-dot"></div>${t}</div>`
+  ).join('');
+
+  // ── Guide ──
+  const gi = document.getElementById('guide-img');
+  gi.src = C.photos.guide.url; gi.alt = C.photos.guide.alt;
+  document.getElementById('guide-label').textContent   = C.guide.sectionLabel;
+  document.getElementById('guide-headline').innerHTML  = C.guide.headline.replace(/\n/g,'<br>');
+  document.getElementById('guide-intro').innerHTML     = C.guide.intro;
+  document.getElementById('bio-full').innerHTML        = C.guide.bioFull.map(p=>`<p>${p}</p>`).join('');
+  document.getElementById('guide-booking').textContent = C.guide.bookingNote;
+
+  // ── Banner ──
+  const bi = document.getElementById('banner-img');
+  bi.src = C.photos.banner.url; bi.alt = C.photos.banner.alt;
+  document.getElementById('banner-line1').textContent  = C.banner.line1;
+  document.getElementById('banner-line2').textContent  = C.banner.line2;
+  document.getElementById('banner-subline').textContent= C.banner.subline;
+
+  // ── Stats ──
+  const colors = ['bg-yellow-400 text-black','bg-white text-black','bg-yellow-400 text-black','bg-white text-black'];
+  document.getElementById('stats-grid').innerHTML = C.stats.map((s,i) =>
+    `<div class="${colors[i]} flex flex-col items-center justify-center py-14 px-4 hover:scale-105 hover:z-10 transition-transform duration-300 cursor-default">
+      <div class="text-5xl md:text-7xl font-black tracking-tighter stat-num" data-target="${s.value}" data-suffix="${s.suffix}">0</div>
+      <div class="mono text-[10px] uppercase font-black mt-2 tracking-widest text-center">${s.label}</div>
+    </div>`
+  ).join('');
+
+  // ── Shoot grid ──
+  document.getElementById('shoot-grid').innerHTML = C.photos.shoot.map(s =>
+    `<div class="shoot-cell">
+      <img src="${s.url}" alt="${s.alt}">
+      <div class="shoot-label"><span class="tag">${s.tag}</span><p class="sub">${s.sub}</p></div>
+    </div>`
+  ).join('');
+
+  // ── Testimonials ──
+  document.getElementById('testi-grid').innerHTML = C.testimonials.map(t =>
+    `<div class="testi">
+      <span class="star">★★★★★</span>
+      <p class="testi-quote">"${t.quote}"</p>
+      <p class="testi-name">${t.name}</p>
+      <p class="testi-role">${t.role}</p>
+    </div>`
+  ).join('');
+
+  // ── Business offer ──
+  const B = C.business;
+  const slotsLeft = B.slotsTotal - B.slotsClaimed;
+  document.getElementById('biz-offer-label').textContent  = B.offerLabel;
+  document.getElementById('price-display').textContent    = B.priceDisplay;
+  document.getElementById('biz-price-unit').textContent   = B.priceUnit;
+  document.getElementById('biz-scarcity-text').innerHTML  =
+    `<span>${B.slotsClaimed} slot${B.slotsClaimed!==1?'s':''} claimed</span><span class="danger">${slotsLeft} remaining</span>`;
+  document.getElementById('biz-disclaimer').textContent   = B.disclaimer;
+  document.getElementById('biz-cta').textContent          = B.ctaLabel;
+  document.getElementById('biz-footnote').textContent     = B.footnote;
+  document.getElementById('biz-deliverables').innerHTML   = B.deliverables.map((d,i) =>
+    `<div class="dlv"><span class="dlv-num">${String(i+1).padStart(2,'0')}</span>
+      <div><p class="dlv-title">${d.title}</p><p class="dlv-desc">${d.desc}</p></div></div>`
+  ).join('');
+  document.getElementById('biz-addons').innerHTML = B.addons.map(a =>
+    `<div class="addon-row"><span class="addon-badge">Add-On</span>
+      <div><p class="addon-title">${a.title}</p><p class="addon-desc">${a.desc}</p><p class="addon-price">${a.price}</p></div></div>`
+  ).join('');
+
+  // ── Personal offer ──
+  const P = C.personal;
+  const sessLeft = P.sessionsTotal - P.sessionsClaimed;
+  document.getElementById('plb-tag').textContent               = P.launchTag;
+  document.getElementById('plb-headline').textContent          = P.launchHeadline;
+  document.getElementById('plb-sub').textContent               = P.launchBody;
+  document.getElementById('plb-counter-num').textContent       = sessLeft;
+  document.getElementById('plb-bar-labels').innerHTML          =
+    `<span>${P.sessionsClaimed} claimed</span><span style="color:var(--y);font-weight:700">${sessLeft} of ${P.sessionsTotal} free sessions left</span>`;
+  document.getElementById('personal-offer-label').textContent  = P.offerLabel;
+  document.getElementById('personal-price-display').textContent= P.priceDisplay;
+  document.getElementById('personal-price-unit').textContent   = P.priceUnit;
+  document.getElementById('personal-after-launch').textContent = P.afterLaunch;
+  document.getElementById('personal-disclaimer').textContent   = P.disclaimer;
+  document.getElementById('personal-cta').textContent          = P.ctaLabel;
+  document.getElementById('personal-footnote').textContent     = P.footnote;
+  document.getElementById('personal-deliverables').innerHTML   = P.deliverables.map((d,i) =>
+    `<div class="dlv"><span class="dlv-num">${String(i+1).padStart(2,'0')}</span>
+      <div><p class="dlv-title">${d.title}</p><p class="dlv-desc">${d.desc}</p></div></div>`
+  ).join('');
+
+  // ── Closing ──
+  const ci = document.getElementById('closing-img');
+  ci.src = C.photos.closing.url; ci.alt = C.photos.closing.alt;
+  document.getElementById('closing-quote').textContent = `"${C.closing.quote}"`;
+  document.getElementById('closing-cta').textContent   = C.closing.ctaLabel;
+
+  // ── Footer ──
+  document.getElementById('footer-brand-name').textContent = C.brand.name;
+  document.getElementById('footer-tagline').textContent    = `"${C.brand.tagline}"`;
+  document.getElementById('footer-meta').innerHTML =
+    `Strategy &amp; Capture for the Resilient.<br>${C.brand.location} — LOG_ID: ${C.brand.logId}`;
+  document.getElementById('footer-links').innerHTML = `
+    <a href="mailto:${C.contact.email}" class="hover:text-yellow-400 transition-colors text-white/60">${C.contact.email}</a>
+    <a href="${C.contact.igUrl}" target="_blank" class="hover:text-yellow-400 transition-colors text-white/60">IG: ${C.contact.instagram}</a>
+    <a href="${C.contact.wellnessUrl}" target="_blank" class="hover:text-yellow-400 transition-colors text-white/60 pt-3 border-t border-white/5 mt-2">Explore Wellness Protocols →</a>
+    <span class="text-white/10 mt-4 tracking-[.5em]">© 2026 ${C.brand.name}.</span>`;
+
+  // ── Drawer scarcity default ──
+  document.getElementById('drawer-scarcity-text').textContent =
+    `${slotsLeft} of ${B.slotsTotal} founding slots remaining — this rate does not return`;
+})();
+
+/* ══════════════════════════════════════════════
+   SCROLL ANIMATIONS
+══════════════════════════════════════════════ */
+gsap.registerPlugin(ScrollTrigger);
+window.addEventListener('load', () => {
+  gsap.utils.toArray('.reveal-content').forEach(el =>
+    gsap.from(el, {y:40,opacity:0,duration:1,scrollTrigger:{trigger:el,start:'top 87%'}}));
+});
+
+// ── Stat counters ──
+(function(){
+  const seen = new WeakSet();
+  function animateStat(el){
+    if(seen.has(el)) return; seen.add(el);
+    const target = parseInt(el.dataset.target,10);
+    const suffix = el.dataset.suffix||'';
+    const start  = performance.now();
+    (function step(now){
+      const p = Math.min((now-start)/1800,1);
+      const e = 1-Math.pow(1-p,3);
+      el.textContent = Math.round(e*target)+suffix;
+      if(p<1) requestAnimationFrame(step);
+    })(start);
+  }
+  const io = new IntersectionObserver(entries=>
+    entries.forEach(e=>{if(e.isIntersecting) animateStat(e.target);}),{threshold:.3});
+  // Stats are rendered dynamically so observe after render
+  document.querySelectorAll('.stat-num').forEach(el=>io.observe(el));
+  // Also observe newly rendered stats after a tick
+  setTimeout(()=>document.querySelectorAll('.stat-num').forEach(el=>io.observe(el)),100);
+})();
+
+// ── Scarcity bars ──
+(function(){
+  const B = CONFIG.business, P = CONFIG.personal;
+  const bizPct  = Math.round((B.slotsClaimed / B.slotsTotal) * 100);
+  const persPct = Math.round((P.sessionsClaimed / P.sessionsTotal) * 100);
+  function animateBar(id, pct){
+    const el = document.getElementById(id); if(!el) return;
+    new IntersectionObserver((entries,obs)=>{
+      if(entries[0].isIntersecting){ el.style.width=pct+'%'; obs.disconnect(); }
+    },{threshold:.1}).observe(el);
+  }
+  animateBar('scarcity-fill', bizPct);
+  animateBar('personal-scarcity-fill', persPct);
+})();
+
+/* ══════════════════════════════════════════════
+   OFFER TOGGLE
+══════════════════════════════════════════════ */
+let activeTab = 'biz';
+function switchOfferTab(tab){
+  activeTab = tab;
+  const toBiz = tab==='biz';
+  document.getElementById('toggle-pill').classList.toggle('right',!toBiz);
+  document.getElementById('tab-biz').classList.toggle('active',toBiz);
+  document.getElementById('tab-personal').classList.toggle('active',!toBiz);
+  document.getElementById('panel-biz').classList.toggle('offer-panel-hidden',!toBiz);
+  document.getElementById('panel-personal').classList.toggle('offer-panel-hidden',toBiz);
+}
+
+/* ══════════════════════════════════════════════
+   SLOT DRAWER
+══════════════════════════════════════════════ */
+const overlay   = document.getElementById('slot-overlay');
+const drawer    = document.getElementById('slot-drawer');
+const closeBtn  = document.getElementById('drawer-close-btn');
+const submitBtn = document.getElementById('drawer-submit-btn');
+let drawerCtx = 'biz';
+
+function openSlotDrawer(ctx){
+  drawerCtx = ctx || activeTab;
+  const isP = drawerCtx === 'personal';
+  const B = CONFIG.business, P = CONFIG.personal;
+
+  document.getElementById('drawer-title-el').innerHTML = isP
+    ? 'Claim Your<br>Free Session.' : 'Claim Your<br>Founding Slot.';
+  document.getElementById('drawer-scarcity-text').textContent = isP
+    ? `${P.sessionsTotal - P.sessionsClaimed} free launch sessions available — first come, first served`
+    : `${B.slotsTotal - B.slotsClaimed} of ${B.slotsTotal} founding slots remaining — this rate does not return`;
+
+  document.getElementById('f-biz-label').innerHTML =
+    (isP ? 'Your Name / Family ' : 'Business Name ') + '<span style="color:var(--y)">*</span>';
+  document.getElementById('f-biz').placeholder = isP ? 'The Campbell Family' : 'Your brand or company';
+  document.getElementById('f-type-label').innerHTML =
+    (isP ? 'What kind of session? ' : 'What kind of business? ') + '<span style="color:var(--y)">*</span>';
+  document.getElementById('opts-biz').style.display     = isP ? 'none' : '';
+  document.getElementById('opts-personal').style.display= isP ? '' : 'none';
+  document.getElementById('f-type').value = '';
+  submitBtn.textContent = isP ? CONFIG.personal.ctaLabel : 'Submit My Application →';
+
+  document.getElementById('drawer-form-wrap').style.display = '';
+  document.getElementById('drawer-success').style.display   = 'none';
+
+  overlay.classList.add('open'); drawer.classList.add('open');
+  overlay.setAttribute('aria-hidden','false'); drawer.setAttribute('aria-hidden','false');
+  document.body.style.overflow = 'hidden';
+  setTimeout(()=>{ const f=drawer.querySelector('input'); if(f) f.focus(); },400);
+}
+
+function closeSlotDrawer(){
+  overlay.classList.remove('open'); drawer.classList.remove('open');
+  overlay.setAttribute('aria-hidden','true'); drawer.setAttribute('aria-hidden','true');
+  document.body.style.overflow = '';
+}
+closeBtn.addEventListener('click', closeSlotDrawer);
+overlay.addEventListener('click', closeSlotDrawer);
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeSlotDrawer(); });
+
+submitBtn.addEventListener('click', ()=>{
+  const name  = document.getElementById('f-name').value.trim();
+  const biz   = document.getElementById('f-biz').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const type  = document.getElementById('f-type').value;
+  if(!name||!biz||!email||!type){
+    const orig = submitBtn.textContent;
+    ['-6px','6px','-4px','0'].forEach((x,i)=>
+      setTimeout(()=>submitBtn.style.transform=`translateX(${x})`,i*80));
+    submitBtn.textContent = 'Fill in the required fields ↑';
+    setTimeout(()=>submitBtn.textContent=orig, 2500);
+    return;
+  }
+  const phone = document.getElementById('f-phone').value.trim();
+  const goal  = document.getElementById('f-goal').value.trim();
+  const time  = document.getElementById('f-time').value;
+  const isP   = drawerCtx==='personal';
+
+  // ── Disable button while submitting ──
+  const orig = submitBtn.textContent;
+  submitBtn.textContent = 'Sending…';
+  submitBtn.disabled = true;
+
+  fetch('/', {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      'form-name': 'slot-application',
+      'context':   isP ? 'Personal / Family' : 'Business',
+      'name':      name,
+      'business':  biz,
+      'email':     email,
+      'phone':     phone || '—',
+      'type':      type,
+      'goal':      goal  || '—',
+      'time':      time  || '—',
+    }).toString(),
+  })
+  .then(res => {
+    if (!res.ok) throw new Error('Network response was not ok');
+    document.getElementById('drawer-form-wrap').style.display = 'none';
+    document.getElementById('drawer-success').style.display   = 'block';
+  })
+  .catch(() => {
+    // Fallback to mailto if fetch fails (e.g. local dev)
+    const sub  = isP ? 'Free Session Request' : 'Founding Slot Application';
+    const body = `Type: ${isP?'Personal':'Business'}\nName: ${name}\nBusiness: ${biz}\nEmail: ${email}\nPhone: ${phone||'—'}\nCategory: ${type}\nGoal: ${goal||'—'}\nBest time: ${time||'—'}`;
+    window.location.href = `mailto:${CONFIG.contact.email}?subject=${sub} — ${encodeURIComponent(biz)}&body=${encodeURIComponent(body)}`;
+    submitBtn.textContent = orig;
+    submitBtn.disabled = false;
+  });
+});
+
+/* ══════════════════════════════════════════════
+   MATRIX RAIN — 20s idle
+══════════════════════════════════════════════ */
+(function(){
+  const canvas=document.getElementById('matrix-canvas'),ctx=canvas.getContext('2d');
+  const chars='TRUSTNOBODY_[]{}01アイウエオカキクケコ'.split('');
+  let cols,drops,animId,idleTimer,running=false;
+  const origTitle=document.title;
+  function resize(){canvas.width=innerWidth;canvas.height=innerHeight;cols=Math.floor(canvas.width/18);drops=Array(cols).fill(1);}
+  function draw(){
+    ctx.fillStyle='rgba(6,6,6,.16)';ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.font='14px "Space Mono",monospace';
+    drops.forEach((y,i)=>{
+      ctx.fillStyle='#facc15';ctx.globalAlpha=.9;
+      ctx.fillText(chars[Math.floor(Math.random()*chars.length)],i*18,y*18);
+      ctx.globalAlpha=1;
+      if(drops[i]*18>canvas.height&&Math.random()>.975)drops[i]=0;
+      drops[i]++;
+    });
+    animId=requestAnimationFrame(draw);
+  }
+  function start(){if(running)return;running=true;resize();canvas.classList.add('active');document.title='nobody is watching.';draw();}
+  function stop(){if(!running)return;running=false;canvas.classList.remove('active');document.title=origTitle;cancelAnimationFrame(animId);ctx.clearRect(0,0,canvas.width,canvas.height);}
+  function resetIdle(){if(running)stop();clearTimeout(idleTimer);idleTimer=setTimeout(start,20000);}
+  window.addEventListener('resize',resize);
+  ['mousemove','keydown','scroll','click','touchstart'].forEach(e=>document.addEventListener(e,resetIdle,{passive:true}));
+  resetIdle();
+})();
+
+/* ══════════════════════════════════════════════
+   $199 TRIPLE-CLICK SCRAMBLE
+══════════════════════════════════════════════ */
+(function(){
+  const el=document.getElementById('price-display'); if(!el) return;
+  const chars='!<>-_\\/[]{}—=+*^?#$%&0123456789';
+  let clicks=0,clickTimer,iv;
+  function scramble(final,ms,cb){
+    let f=0,total=ms/40; el.classList.add('scrambling');
+    iv=setInterval(()=>{
+      const p=f/total;
+      el.textContent=final.split('').map((c,i)=>i<Math.floor(p*final.length)?c:chars[Math.floor(Math.random()*chars.length)]).join('');
+      if(++f>=total){clearInterval(iv);el.textContent=final;el.classList.remove('scrambling');if(cb)cb();}
+    },40);
+  }
+  el.addEventListener('click',()=>{
+    clicks++;clearTimeout(clickTimer);clickTimer=setTimeout(()=>{clicks=0;},600);
+    if(clicks>=3){clicks=0;clearInterval(iv);scramble('priceless.',800,()=>setTimeout(()=>scramble(CONFIG.business.priceDisplay,600),1400));}
+  });
+})();
+
+/* ══════════════════════════════════════════════
+   BIO TOGGLE
+══════════════════════════════════════════════ */
+(function(){
+  const btn=document.getElementById('bio-toggle'),panel=document.getElementById('bio-expand'),label=document.getElementById('bio-toggle-label');
+  if(!btn) return;
+  btn.addEventListener('click',()=>{
+    const open=btn.getAttribute('aria-expanded')==='true';
+    panel.style.maxHeight=open?'0':panel.scrollHeight+'px';
+    label.textContent=open?'+ The Full Story':'− Collapse';
+    btn.setAttribute('aria-expanded',String(!open));
+  });
+})();
+
+/* ══════════════════════════════════════════════
+   LOGO EASTER EGG
+══════════════════════════════════════════════ */
+(function(){
+  const u=document.getElementById('logo-underscore'); let tip,timer;
+  u.addEventListener('mouseenter',()=>{
+    timer=setTimeout(()=>{
+      tip=Object.assign(document.createElement('div'),{textContent:'you found nobody.'});
+      Object.assign(tip.style,{position:'fixed',top:'60px',left:'40px',background:'var(--y)',color:'#000',fontFamily:'"Space Mono",monospace',fontSize:'9px',textTransform:'uppercase',letterSpacing:'.3em',padding:'6px 12px',zIndex:'9999',opacity:'0',transition:'opacity .4s',pointerEvents:'none'});
+      document.body.appendChild(tip);
+      requestAnimationFrame(()=>tip.style.opacity='1');
+    },2000);
+  });
+  u.addEventListener('mouseleave',()=>{
+    clearTimeout(timer);
+    if(tip){tip.style.opacity='0';setTimeout(()=>{tip&&tip.remove();tip=null;},400);}
+  });
+})();
+</script>
 </body>
 </html>
