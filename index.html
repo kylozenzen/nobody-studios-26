@@ -46,11 +46,10 @@ const CONFIG = {
       url: 'https://images.unsplash.com/photo-1652180126105-da17c5824a0f?q=80&w=1800&auto=format&fit=crop',
       alt: 'Nobody Creative workspace',
     },
-
-guide: {
-  url: 'https://raw.githubusercontent.com/kylozenzen/ben-portfolio/main/Ben%20Headshot%202026.jpg',
-  alt: 'Ben Campbell — Nobody Creative',
-},
+    guide: {
+      url: 'https://images.unsplash.com/photo-1604514628550-37477afdf4e3?w=900&auto=format&fit=crop&q=80',
+      alt: 'Ben Campbell — Nobody Creative',
+    },
     banner: {
       url: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=2000&auto=format&fit=crop&q=80',
       alt: 'On location production',
@@ -407,6 +406,22 @@ select.field-input{cursor:crosshair}
 </style>
 </head>
 <body>
+
+<!-- ═══ NETLIFY FORM DETECTION (hidden — do not remove) ═══ -->
+<!-- Netlify's build bot reads this at deploy time.           -->
+<!-- The visible form in the drawer submits to this via fetch. -->
+<form name="slot-application" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="hidden" name="form-name" value="slot-application">
+  <input name="bot-field">
+  <input name="context">
+  <input name="name">
+  <input name="business">
+  <input name="email">
+  <input name="phone">
+  <input name="type">
+  <input name="goal">
+  <input name="time">
+</form>
 
 <canvas id="matrix-canvas"></canvas>
 
@@ -1001,11 +1016,40 @@ submitBtn.addEventListener('click', ()=>{
   const goal  = document.getElementById('f-goal').value.trim();
   const time  = document.getElementById('f-time').value;
   const isP   = drawerCtx==='personal';
-  const sub   = isP ? 'Free Session Request' : 'Founding Slot Application';
-  const body  = `Type: ${isP?'Personal':'Business'}\nName: ${name}\n${isP?'Family':'Business'}: ${biz}\nEmail: ${email}\nPhone: ${phone||'—'}\nCategory: ${type}\nGoal: ${goal||'—'}\nBest time: ${time||'—'}`;
-  window.location.href = `mailto:${CONFIG.contact.email}?subject=${sub} — ${encodeURIComponent(biz)}&body=${encodeURIComponent(body)}`;
-  document.getElementById('drawer-form-wrap').style.display = 'none';
-  document.getElementById('drawer-success').style.display   = 'block';
+
+  // ── Disable button while submitting ──
+  const orig = submitBtn.textContent;
+  submitBtn.textContent = 'Sending…';
+  submitBtn.disabled = true;
+
+  fetch('/', {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      'form-name': 'slot-application',
+      'context':   isP ? 'Personal / Family' : 'Business',
+      'name':      name,
+      'business':  biz,
+      'email':     email,
+      'phone':     phone || '—',
+      'type':      type,
+      'goal':      goal  || '—',
+      'time':      time  || '—',
+    }).toString(),
+  })
+  .then(res => {
+    if (!res.ok) throw new Error('Network response was not ok');
+    document.getElementById('drawer-form-wrap').style.display = 'none';
+    document.getElementById('drawer-success').style.display   = 'block';
+  })
+  .catch(() => {
+    // Fallback to mailto if fetch fails (e.g. local dev)
+    const sub  = isP ? 'Free Session Request' : 'Founding Slot Application';
+    const body = `Type: ${isP?'Personal':'Business'}\nName: ${name}\nBusiness: ${biz}\nEmail: ${email}\nPhone: ${phone||'—'}\nCategory: ${type}\nGoal: ${goal||'—'}\nBest time: ${time||'—'}`;
+    window.location.href = `mailto:${CONFIG.contact.email}?subject=${sub} — ${encodeURIComponent(biz)}&body=${encodeURIComponent(body)}`;
+    submitBtn.textContent = orig;
+    submitBtn.disabled = false;
+  });
 });
 
 /* ══════════════════════════════════════════════
