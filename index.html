@@ -3,506 +3,1123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>_NOBODY CREATIVE. | TRUST NOBODY.</title>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Cormorant+Garamond:ital,wght@1,700&display=swap" rel="stylesheet">
+    <title>Nobody Creative | Content Strategy · San Antonio</title>
+
+    <meta property="og:title"        content="Nobody Creative | Content Strategy · San Antonio">
+    <meta property="og:description"  content="Enterprise-level content. Local commitment. One founding price. Built by Nobody.">
+    <meta property="og:image"        content="https://images.unsplash.com/photo-1652180126105-da17c5824a0f?q=80&w=1200&auto=format&fit=crop">
+    <meta property="og:url"          content="https://nobodycreative.com">
+    <meta property="og:type"         content="website">
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:title"       content="Nobody Creative | Content Strategy · San Antonio">
+    <meta name="twitter:description" content="Enterprise-level content. Local commitment. One founding price.">
+    <meta name="twitter:image"       content="https://images.unsplash.com/photo-1652180126105-da17c5824a0f?q=80&w=1200&auto=format&fit=crop">
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23060606'/%3E%3Ctext x='2' y='26' font-family='monospace' font-size='22' font-weight='900' fill='%23facc15'%3E_N%3C/text%3E%3C/svg%3E">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,700&family=Inter:wght@400;700;900&family=Space+Mono:wght@400;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --y: #facc15;
-            --blk: #060606;
+            --y:  #facc15;
+            --b:  #060606;
+            --fm: 'Space Mono', monospace;
+            --fd: 'Bebas Neue', sans-serif;
+            --fs: 'Cormorant Garamond', serif;
         }
 
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html { height: 100%; cursor: crosshair; }
+        *, *::before, *::after { box-sizing: border-box; }
+        html { scroll-behavior: smooth; cursor: crosshair; }
         body {
-            background: var(--blk);
-            color: #fff;
-            font-family: 'Space Mono', monospace;
-            overflow-x: hidden;
-            min-height: 100%;
+            background: var(--b); color: #fff;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden; -webkit-font-smoothing: antialiased;
         }
+        .serif { font-family: var(--fs); }
+        .mono  { font-family: var(--fm); }
+        .bebas { font-family: var(--fd); }
 
-        /* GRAIN */
+        ::selection { background: var(--y); color: #000; }
+
+        /* Grain */
         body::before {
-            content: '';
-            position: fixed; inset: 0;
-            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
-            opacity: 0.3;
-            pointer-events: none;
-            z-index: 900;
+            content: ''; position: fixed; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)' opacity='0.45'/%3E%3C/svg%3E");
+            background-size: 200px 200px; opacity: 0.25;
+            pointer-events: none; z-index: 900;
         }
 
-        /* PHOTO BG */
-        .bg {
-            position: fixed; inset: 0; z-index: 0;
+        /* Matrix */
+        #matrix-canvas {
+            position: fixed; inset: 0; z-index: 890;
+            pointer-events: none; opacity: 0;
+            transition: opacity 0.8s ease;
         }
-        .bg img {
-            width: 100%; height: 100%;
-            object-fit: cover;
-            object-position: center 20%;
-            filter: grayscale(100%) brightness(0.65) contrast(1.1);
-            transition: opacity 1.6s ease;
-        }
-        .bg::after {
-            content: '';
-            position: absolute; inset: 0;
-            background:
-                linear-gradient(to top, rgba(6,6,6,1) 0%, rgba(6,6,6,0.75) 45%, rgba(6,6,6,0.25) 100%),
-                linear-gradient(to right, rgba(6,6,6,0.75) 0%, transparent 65%);
-        }
-
-        /* LAYOUT */
-        .wrap {
-            position: relative; z-index: 10;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding: 0 56px;
-        }
+        #matrix-canvas.active { opacity: 1; }
 
         /* NAV */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 34px 0;
-            flex-shrink: 0;
+        .nav-blur {
+            background: rgba(6,6,6,0.92);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
         }
-        .logo {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 22px;
-            letter-spacing: 0.1em;
-            color: #fff;
-            text-decoration: none;
-        }
-        .logo em { color: var(--y); font-style: normal; }
-
-        .status {
-            display: flex; align-items: center; gap: 10px;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.36em;
-            color: rgba(255,255,255,0.3);
-        }
-        .dot {
-            width: 7px; height: 7px;
-            border-radius: 50%;
-            background: var(--y);
+        .dot-live {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: var(--y); flex-shrink: 0;
             animation: throb 2s ease-in-out infinite;
         }
         @keyframes throb {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50%       { opacity: 0.3; transform: scale(0.6); }
+            0%,100%{ opacity:1; transform:scale(1); }
+            50%    { opacity:0.3; transform:scale(0.6); }
         }
+
+        /* BUTTONS */
+        .btn-y {
+            background: var(--y); color: #000; font-weight: 900;
+            font-family: var(--fm); text-transform: uppercase;
+            letter-spacing: 0.08em; font-size: 11px; padding: 14px 28px;
+            transition: all 0.2s ease; display: inline-block; text-decoration: none;
+            white-space: nowrap; cursor: crosshair;
+        }
+        .btn-y:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(250,204,21,0.35); }
+        .btn-ghost {
+            border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.65);
+            font-family: var(--fm); font-size: 10px; text-transform: uppercase;
+            letter-spacing: 0.25em; padding: 14px 22px;
+            transition: all 0.25s; display: inline-block; text-decoration: none;
+            background: rgba(6,6,6,0.5); cursor: crosshair;
+        }
+        .btn-ghost:hover { border-color: var(--y); color: var(--y); }
 
         /* HERO */
-        .hero {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding-bottom: 72px;
-            align-items: center;
+        .hero-section { position: relative; min-height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        .hero-bg { position: absolute; inset: 0; z-index: 0; }
+        .hero-bg img {
+            width: 100%; height: 100%; object-fit: cover; object-position: center 20%;
+            filter: grayscale(100%) brightness(0.55) contrast(1.15);
+        }
+        .hero-bg::after {
+            content: ''; position: absolute; inset: 0;
+            background:
+                linear-gradient(to top, rgba(6,6,6,1) 0%, rgba(6,6,6,0.7) 45%, rgba(6,6,6,0.15) 100%),
+                linear-gradient(to right, rgba(6,6,6,0.8) 0%, transparent 55%);
+        }
+        .hero-inner {
+            position: relative; z-index: 10;
+            display: flex; flex-direction: column; flex: 1; padding: 0 52px;
+        }
+        .title-block {
+            flex: 1; display: flex; flex-direction: column;
+            justify-content: center; padding-top: 110px; padding-bottom: 32px;
         }
 
-        /* TITLE — left aligned, full width */
-        .title {
-            font-family: 'Bebas Neue', sans-serif;
-            line-height: 0.83;
-            letter-spacing: -0.01em;
-            margin-bottom: 44px;
-            align-self: flex-start;
-        }
-
-        /* TRUST — solid white, large, slides from left */
+        /* TRUST NOBODY. */
+        .hn-title { font-family: 'Bebas Neue', sans-serif; line-height: 0.83; letter-spacing: -0.01em; margin-bottom: 28px; }
         .t-trust {
-            display: block;
-            font-size: clamp(100px, 18vw, 270px);
-            color: #ffffff;
+            display: block; font-size: clamp(68px, 14vw, 210px); color: #fff;
             text-shadow: 0 0 120px rgba(255,255,255,0.08);
             animation: fromLeft 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s both;
         }
-
-        /* NOBODY — yellow, slides from right, fills in */
-        .t-nobody {
-            display: block;
-            font-size: clamp(100px, 18vw, 270px);
-            animation: fromRight 0.9s cubic-bezier(0.16,1,0.3,1) 0.25s both;
-        }
-
-        .nw {
-            position: relative;
-            display: inline-block;
-            animation: glitch 7s ease-in-out 2.5s infinite;
-        }
-
-        .nw-ghost {
-            display: block;
-            -webkit-text-stroke: 2px rgba(255,255,255,0.1);
-            color: transparent;
-        }
-
+        .t-nobody { display: block; font-size: clamp(68px, 14vw, 210px); animation: fromRight 0.9s cubic-bezier(0.16,1,0.3,1) 0.25s both; }
+        .nw { position: relative; display: inline-block; animation: glitch 7s ease-in-out 2.5s infinite; }
+        .nw-ghost { display: block; -webkit-text-stroke: 2px rgba(255,255,255,0.08); color: transparent; }
         .nw-fill {
-            position: absolute; left: 0; top: 0;
-            display: block;
-            color: var(--y);
-            clip-path: inset(0 100% 0 0);
+            position: absolute; left: 0; top: 0; display: block;
+            color: var(--y); clip-path: inset(0 100% 0 0);
             animation: sweepIn 1s cubic-bezier(0.77,0,0.18,1) 0.9s forwards;
-            text-shadow: 0 0 80px rgba(250,204,21,0.25);
+            text-shadow: 0 0 80px rgba(250,204,21,0.2);
         }
+        .nw-shadow { position: absolute; left: 5px; top: 5px; display: block; color: rgba(250,204,21,0.08); z-index: -1; }
 
-        .nw-shadow {
-            position: absolute; left: 5px; top: 5px;
-            display: block;
-            color: rgba(250,204,21,0.1);
-            z-index: -1;
-        }
-
-        @keyframes fromLeft {
-            from { opacity: 0; transform: translateX(-60px); }
-            to   { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes fromRight {
-            from { opacity: 0; transform: translateX(60px); }
-            to   { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes sweepIn {
-            to { clip-path: inset(0 0% 0 0); }
-        }
+        @keyframes fromLeft  { from{opacity:0;transform:translateX(-60px)} to{opacity:1;transform:translateX(0)} }
+        @keyframes fromRight { from{opacity:0;transform:translateX(60px)}  to{opacity:1;transform:translateX(0)} }
+        @keyframes sweepIn   { to{clip-path:inset(0 0% 0 0)} }
         @keyframes glitch {
-            0%, 87%, 100% { transform: translate(0); filter: none; }
-            89%  { transform: translate(-4px, 1px); filter: hue-rotate(20deg) brightness(1.3); }
-            91%  { transform: translate(4px, -2px); }
-            93%  { transform: translate(-2px, 1px); filter: hue-rotate(-15deg); }
-            95%  { transform: translate(0); filter: none; }
+            0%,87%,100%{transform:translate(0);filter:none}
+            89%{transform:translate(-4px,1px);filter:hue-rotate(20deg) brightness(1.3)}
+            91%{transform:translate(4px,-2px)}
+            93%{transform:translate(-2px,1px);filter:hue-rotate(-15deg)}
+            95%{transform:translate(0);filter:none}
         }
+        @keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
 
-        /* TAGLINE */
-        .tagline {
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-size: clamp(22px, 2.4vw, 32px);
-            color: rgba(255,255,255,0.85);
-            line-height: 1.45;
-            max-width: 560px;
-            margin-bottom: 52px;
-            animation: fadeUp 0.8s ease 0.85s both;
-            text-align: left;
-            align-self: flex-start;
-        }
-
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(16px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-
-        /* WHAT WE BUILD */
-        .what-wrap {
-            margin-bottom: 56px;
-            animation: fadeUp 0.8s ease 1s both;
-            text-align: center;
-        }
-
-        .section-label {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.5em;
-            color: var(--y);
-            display: block;
-            margin-bottom: 18px;
-        }
-
-        .what-grid {
-            display: grid;
-            grid-template-columns: repeat(4, auto);
-            gap: 2px;
-            width: fit-content;
-            margin: 0 auto;
-        }
-
-        .what-item {
+        .hero-text-box {
             background: rgba(6,6,6,0.6);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 18px 24px;
-            position: relative;
-            overflow: hidden;
-            transition: border-color 0.25s, background 0.25s;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-left: 2px solid rgba(250,204,21,0.35);
+            padding: 22px 28px;
+            display: inline-block;
+            max-width: 580px;
+            animation: fadeUp 0.8s ease 0.85s both;
         }
-
-        .what-item::after {
-            content: '';
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            height: 2px;
-            background: var(--y);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.3s ease;
-        }
-
-        .what-item:hover {
-            background: rgba(250,204,21,0.06);
-            border-color: rgba(250,204,21,0.3);
-        }
-        .what-item:hover::after { transform: scaleX(1); }
-
-        .what-num {
-            font-size: 10px;
-            color: var(--y);
-            letter-spacing: 0.3em;
-            display: block;
-            margin-bottom: 10px;
-            opacity: 0.6;
-        }
-
-        .what-name {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 29px;
-            letter-spacing: 0.06em;
+        .hero-tagline {
+            font-family: var(--fs); font-style: italic;
+            font-size: clamp(18px, 2.1vw, 27px);
             color: #fff;
+            line-height: 1.5; margin: 0;
+        }
+        .hero-ctas { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 24px; }
+
+        /* TICKER */
+        .ticker-outer { overflow: hidden; }
+        .ticker-inner { display: flex; gap: 48px; white-space: nowrap; animation: tick 30s linear infinite; }
+        @keyframes tick { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+        .tick-item {
+            font-family: var(--fm); font-size: 10px; text-transform: uppercase;
+            letter-spacing: 0.35em; color: rgba(0,0,0,0.75); font-weight: 700;
+            display: flex; align-items: center; gap: 14px; flex-shrink: 0;
+        }
+        .tick-dot { width:5px; height:5px; background:rgba(0,0,0,0.5); border-radius:50%; }
+
+        /* IMAGE TREATMENT */
+        .img-gritty {
+            filter: grayscale(100%) contrast(120%) brightness(75%);
+            transition: filter 0.7s cubic-bezier(0.19,1,0.22,1), transform 0.7s cubic-bezier(0.19,1,0.22,1);
+        }
+        .img-card:hover .img-gritty { filter: grayscale(0%) contrast(108%) brightness(88%); transform: scale(1.04); }
+
+        /* SECTION LABELS */
+        .sec-label {
+            font-family: var(--fm); font-size: 10px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.45em;
+            color: var(--y); display: block; margin-bottom: 16px;
+        }
+
+        .body-copy { font-size: 16px; line-height: 1.8; color: rgba(255,255,255,0.88); }
+        .body-copy strong { color: #fff; font-weight: 700; }
+
+        /* STEP ROWS */
+        .step-row {
+            border-bottom: 1px solid rgba(255,255,255,0.07); padding: 16px 0;
+            display: flex; align-items: center; justify-content: space-between;
+            transition: background 0.2s, padding-left 0.2s;
+        }
+        .step-row:hover { background: rgba(250,204,21,0.05); padding-left: 8px; }
+        .step-row:hover .sa { color: var(--y); transform: translateX(5px); }
+        .step-row p { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 3px; color: #fff; }
+        .sa { transition: color 0.2s, transform 0.2s; color: rgba(255,255,255,0.2); font-size: 16px; }
+
+        /* FULL-WIDTH BANNER IMAGE */
+        .banner-img {
+            width: 100%; height: 380px; object-fit: cover; object-position: center;
+            filter: grayscale(100%) contrast(120%) brightness(65%);
             display: block;
-            line-height: 1;
-            margin-bottom: 6px;
         }
 
-        .what-sub {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.14em;
-            color: rgba(255,255,255,0.4);
-            line-height: 1.5;
-        }
-
-        /* SOCIAL CTA */
-        .social-wrap {
-            animation: fadeUp 0.8s ease 1.15s both;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .social-label {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.46em;
-            color: rgba(255,255,255,0.35);
+        /* WHAT WE SHOOT grid */
+        .shoot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; }
+        .shoot-cell { position: relative; overflow: hidden; aspect-ratio: 4/5; }
+        .shoot-cell img {
+            width: 100%; height: 100%; object-fit: cover;
+            filter: grayscale(100%) contrast(120%) brightness(70%);
+            transition: filter 0.6s ease, transform 0.6s ease;
             display: block;
-            margin-bottom: 18px;
+        }
+        .shoot-cell:hover img { filter: grayscale(0%) contrast(108%) brightness(88%); transform: scale(1.04); }
+        .shoot-label {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 40px 16px 16px;
+            background: linear-gradient(to top, rgba(6,6,6,0.9), transparent);
+        }
+        .shoot-label .tag { background: var(--y); color: #000; font-family: var(--fm); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3em; padding: 3px 8px; display: inline-block; margin-bottom: 6px; }
+        .shoot-label .sub { font-size: 11px; font-family: var(--fm); text-transform: uppercase; letter-spacing: 0.2em; color: rgba(255,255,255,0.55); }
+
+        /* TESTIMONIALS */
+        .testi {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 28px;
+            transition: border-color 0.25s;
+        }
+        .testi:hover { border-color: rgba(250,204,21,0.3); }
+        .testi-quote {
+            font-family: var(--fs); font-style: italic;
+            font-size: 19px; line-height: 1.65;
+            color: rgba(255,255,255,0.9); margin-bottom: 20px;
+        }
+        .testi-name { font-family: var(--fm); font-size: 10px; text-transform: uppercase; letter-spacing: 0.4em; color: var(--y); font-weight: 700; }
+        .testi-role { font-family: var(--fm); font-size: 9px; text-transform: uppercase; letter-spacing: 0.25em; color: rgba(255,255,255,0.3); margin-top: 4px; }
+        .star { color: var(--y); font-size: 13px; letter-spacing: 3px; margin-bottom: 14px; display: block; }
+
+        /* ═══════════════════════════════════════════
+           OFFER SECTION — FIXED READABILITY
+           ═══════════════════════════════════════════ */
+        .offer-section { background: #fff; color: #000; }
+
+        /* Deliverables on the dark left panel */
+        .offer-left { background: #0a0a0a; border-right: 3px solid #000; }
+        .dlv {
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding: 20px 0; display: flex; align-items: flex-start; gap: 16px;
+        }
+        .dlv:last-child { border-bottom: none; }
+        .dlv-num {
+            background: var(--y); color: #000;
+            font-family: var(--fm); font-size: 10px; font-weight: 700;
+            padding: 4px 8px; flex-shrink: 0; margin-top: 2px;
+        }
+        .dlv-title {
+            font-size: 13px; font-weight: 900; text-transform: uppercase;
+            letter-spacing: 0.04em; color: #fff; line-height: 1.3;
+        }
+        .dlv-desc {
+            font-size: 13px; color: rgba(255,255,255,0.6);
+            margin-top: 5px; line-height: 1.65;
         }
 
-        .social-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 16px;
-            background: rgba(6,6,6,0.65);
-            border: 1px solid rgba(250,204,21,0.35);
-            padding: 20px 32px;
-            text-decoration: none;
-            transition: all 0.25s;
-            max-width: 470px;
-            width: 100%;
-            justify-content: center;
+        /* Pricing panel — white background, clear black text */
+        .offer-right { background: #fff; }
+        .offer-label {
+            font-family: var(--fm); font-size: 10px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.4em; color: #555;
+            display: block; margin-bottom: 10px;
+        }
+        .offer-price-unit {
+            font-family: var(--fm); font-size: 11px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.3em; color: #888;
+        }
+        .offer-disclaimer {
+            font-size: 14px; color: #333; line-height: 1.7;
+            border-top: 1px solid #e5e5e5;
+            padding-top: 20px; margin-top: 20px;
+        }
+        .offer-note {
+            font-family: var(--fm); font-size: 10px;
+            text-transform: uppercase; letter-spacing: 0.25em;
+            color: #888; margin-top: 10px; display: block;
         }
 
-        .social-link:hover {
-            background: rgba(250,204,21,0.08);
-            border-color: var(--y);
-            transform: translateY(-2px);
+        /* Slot scarcity bar */
+        .scarcity-bar-wrap {
+            background: #f0f0f0; height: 4px; width: 100%; margin: 16px 0 8px;
         }
-
-        .social-link:hover .social-arrow {
-            letter-spacing: 0.36em;
+        .scarcity-bar-fill {
+            background: var(--y); height: 100%;
+            width: 60%; /* 3 of 5 slots taken */
+            transition: width 1.5s cubic-bezier(0.19,1,0.22,1);
         }
-
-        .ig-icon {
-            width: 24px;
-            height: 24px;
-            flex-shrink: 0;
+        .scarcity-text {
+            font-family: var(--fm); font-size: 9px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.3em; color: #222;
+            display: flex; justify-content: space-between;
         }
+        .scarcity-text .taken { color: #000; }
+        .scarcity-text .left  { color: #e03b3b; }
 
-        .social-handle {
+        /* $199 scramble */
+        #price-display {
+            cursor: default; transition: color 0.1s;
             font-family: 'Bebas Neue', sans-serif;
-            font-size: 31px;
-            letter-spacing: 0.06em;
-            color: var(--y);
-            line-height: 1;
+            font-size: clamp(5rem, 13vw, 9.5rem);
+            line-height: 1; letter-spacing: -0.02em;
+            color: #000;
+        }
+        #price-display.scrambling { color: var(--y); opacity: 0.7; }
+
+        /* ═══════════════════════════════════════════
+           SLOT CLAIM MODAL
+           ═══════════════════════════════════════════ */
+        #slot-overlay {
+            position: fixed; inset: 0; z-index: 9000;
+            background: rgba(6,6,6,0); pointer-events: none;
+            transition: background 0.4s ease;
+        }
+        #slot-overlay.open {
+            background: rgba(6,6,6,0.88); pointer-events: all;
         }
 
-        .social-arrow {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.26em;
-            color: rgba(255,255,255,0.35);
-            margin-left: auto;
-            transition: letter-spacing 0.25s;
+        #slot-drawer {
+            position: fixed; bottom: 0; left: 0; right: 0; z-index: 9001;
+            background: #fff; color: #000;
+            border-top: 4px solid var(--y);
+            padding: 0;
+            transform: translateY(100%);
+            transition: transform 0.55s cubic-bezier(0.16,1,0.3,1);
+            max-height: 92vh; overflow-y: auto;
+        }
+        #slot-drawer.open {
+            transform: translateY(0);
         }
 
-        .social-fine {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.3em;
-            color: rgba(255,255,255,0.18);
-            margin-top: 14px;
+        .drawer-inner { max-width: 680px; margin: 0 auto; padding: 48px 32px 56px; }
+
+        .drawer-header {
+            display: flex; justify-content: space-between; align-items: flex-start;
+            margin-bottom: 32px;
+        }
+        .drawer-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.5rem, 7vw, 4rem);
+            line-height: 0.9; letter-spacing: -0.01em; color: #000;
+        }
+        .drawer-close {
+            background: none; border: none; cursor: crosshair;
+            font-family: 'Space Mono', monospace; font-size: 10px;
+            text-transform: uppercase; letter-spacing: 0.3em;
+            color: #888; padding: 8px 0; transition: color 0.2s;
+            flex-shrink: 0; margin-top: 6px;
+        }
+        .drawer-close:hover { color: #000; }
+
+        .drawer-scarcity {
+            background: #000; color: #fff;
+            font-family: 'Space Mono', monospace; font-size: 9px;
+            text-transform: uppercase; letter-spacing: 0.35em;
+            padding: 10px 16px; margin-bottom: 28px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .drawer-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--y); animation: throb 2s infinite; flex-shrink: 0; }
+
+        /* Form fields */
+        .field-group { margin-bottom: 20px; }
+        .field-label {
+            display: block; font-family: 'Space Mono', monospace;
+            font-size: 9px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.35em; color: #555; margin-bottom: 8px;
+        }
+        .field-required { color: var(--y); }
+        .field-input {
+            width: 100%; border: 1px solid #d0d0d0; background: #fafafa;
+            font-family: 'Inter', sans-serif; font-size: 15px; color: #000;
+            padding: 14px 16px; outline: none;
+            transition: border-color 0.2s, background 0.2s;
+            -webkit-appearance: none; border-radius: 0;
+        }
+        .field-input:focus { border-color: #000; background: #fff; }
+        .field-input::placeholder { color: #bbb; }
+        textarea.field-input { resize: vertical; min-height: 90px; }
+        select.field-input { cursor: crosshair; }
+
+        .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+        .drawer-submit {
+            width: 100%; background: #000; color: var(--y);
+            font-family: 'Space Mono', monospace; font-weight: 700;
+            font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em;
+            padding: 18px 28px; border: none; cursor: crosshair;
+            transition: all 0.2s; margin-top: 8px;
+        }
+        .drawer-submit:hover {
+            background: var(--y); color: #000;
+            box-shadow: 0 10px 28px rgba(250,204,21,0.3);
         }
 
-        /* FOOTER */
-        footer {
-            flex-shrink: 0;
-            padding: 24px 0;
-            border-top: 1px solid rgba(255,255,255,0.07);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
+        .drawer-subtext {
+            font-family: 'Space Mono', monospace; font-size: 9px;
+            text-transform: uppercase; letter-spacing: 0.25em;
+            color: #aaa; text-align: center; margin-top: 14px;
         }
 
-        .foot-left {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
+        /* Success state */
+        #drawer-success {
+            display: none; text-align: center; padding: 20px 0;
+        }
+        #drawer-success .success-mark {
+            font-size: 3rem; margin-bottom: 16px; display: block;
+        }
+        #drawer-success h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem; letter-spacing: -0.01em; color: #000; margin-bottom: 8px;
+        }
+        #drawer-success p {
+            font-size: 14px; color: #555; line-height: 1.7; max-width: 400px; margin: 0 auto;
         }
 
-        .foot-tagline {
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-size: 17px;
-            color: rgba(255,255,255,0.55);
-        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #1a1a1a; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--y); }
 
-        .foot-meta {
-            font-size: 9px;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            color: rgba(255,255,255,0.15);
-        }
-
-        .foot-right a {
-            font-size: 9px;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            color: rgba(255,255,255,0.3);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-        .foot-right a:hover { color: var(--y); }
-
-        /* MOBILE */
         @media (max-width: 700px) {
-            .wrap { padding: 0 26px; }
-            .status { display: none; }
-            .what-grid { grid-template-columns: repeat(2, 1fr); width: 100%; }
-            .what-item { padding: 14px 16px; }
-            footer { flex-direction: column; align-items: flex-start; }
+            .hero-inner { padding: 0 20px; }
+            .t-trust, .t-nobody { font-size: clamp(60px, 17vw, 110px); }
+            .hero-text-box { padding: 16px 18px; max-width: 100%; }
+            .hero-tagline { font-size: 17px; }
+            .hero-ctas { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .hero-ctas .btn-y, .hero-ctas .btn-ghost { width: 100%; text-align: center; }
+            .shoot-grid { grid-template-columns: 1fr 1fr; }
+            .shoot-grid .shoot-cell:last-child { display: none; }
+            .shoot-cell { max-height: 260px; }
+            .footer-links { text-align: left; }
+            .field-row { grid-template-columns: 1fr; }
+            .drawer-inner { padding: 32px 20px 48px; }
         }
     </style>
 </head>
 <body>
 
-<div class="bg">
-    <img id="bgImg"
-         src="https://images.unsplash.com/photo-1652180126105-da17c5824a0f?q=80&w=1800&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-         alt="">
+<canvas id="matrix-canvas"></canvas>
+
+<!-- ═══════════════════════════════════════════
+     SLOT CLAIM MODAL
+     ═══════════════════════════════════════════ -->
+<div id="slot-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="drawer-title-text"></div>
+<div id="slot-drawer" aria-hidden="true">
+    <div class="drawer-inner">
+        <div class="drawer-header">
+            <div>
+                <div class="drawer-title" id="drawer-title-text">
+                    Claim Your<br><span style="color:#000;">Founding Slot.</span>
+                </div>
+            </div>
+            <button class="drawer-close" id="drawer-close-btn" aria-label="Close">✕ Close</button>
+        </div>
+
+        <div class="drawer-scarcity">
+            <div class="drawer-dot"></div>
+            <span>2 of 5 founding slots remaining — this rate does not return</span>
+        </div>
+
+        <div id="drawer-form-wrap">
+            <div class="field-row">
+                <div class="field-group">
+                    <label class="field-label" for="f-name">Your Name <span class="field-required">*</span></label>
+                    <input class="field-input" type="text" id="f-name" name="name" placeholder="First Last" required autocomplete="name">
+                </div>
+                <div class="field-group">
+                    <label class="field-label" for="f-biz">Business Name <span class="field-required">*</span></label>
+                    <input class="field-input" type="text" id="f-biz" name="business" placeholder="Your brand or company" required>
+                </div>
+            </div>
+
+            <div class="field-row">
+                <div class="field-group">
+                    <label class="field-label" for="f-email">Email <span class="field-required">*</span></label>
+                    <input class="field-input" type="email" id="f-email" name="email" placeholder="you@yourbrand.com" required autocomplete="email">
+                </div>
+                <div class="field-group">
+                    <label class="field-label" for="f-phone">Phone (optional)</label>
+                    <input class="field-input" type="tel" id="f-phone" name="phone" placeholder="(210) 555-0100" autocomplete="tel">
+                </div>
+            </div>
+
+            <div class="field-group">
+                <label class="field-label" for="f-type">What kind of business? <span class="field-required">*</span></label>
+                <select class="field-input" id="f-type" name="type" required>
+                    <option value="" disabled selected>Select your category</option>
+                    <option>Restaurant / Food & Beverage</option>
+                    <option>Retail / Product Brand</option>
+                    <option>Service Business</option>
+                    <option>Real Estate</option>
+                    <option>Health & Fitness</option>
+                    <option>Hospitality / Events</option>
+                    <option>Arts / Entertainment</option>
+                    <option>Non-Profit / Community</option>
+                    <option>Other</option>
+                </select>
+            </div>
+
+            <div class="field-group">
+                <label class="field-label" for="f-goal">What's the #1 thing you want content to do for your business?</label>
+                <textarea class="field-input" id="f-goal" name="goal" placeholder="e.g. Get more foot traffic, grow my Instagram, show what we actually do..."></textarea>
+            </div>
+
+            <div class="field-group">
+                <label class="field-label" for="f-time">Best time to connect</label>
+                <select class="field-input" id="f-time" name="time">
+                    <option value="" disabled selected>Select a time window</option>
+                    <option>Weekday mornings (8am–12pm)</option>
+                    <option>Weekday afternoons (12pm–5pm)</option>
+                    <option>Weekday evenings (5pm–8pm)</option>
+                    <option>Weekends</option>
+                    <option>Anytime — just reach out</option>
+                </select>
+            </div>
+
+            <button class="drawer-submit" id="drawer-submit-btn" type="button">
+                Submit My Application →
+            </button>
+            <p class="drawer-subtext">No commitment. No spam. Just a conversation.</p>
+        </div>
+
+        <div id="drawer-success">
+            <span class="success-mark">◈</span>
+            <h3>Transmission Received.</h3>
+            <p>You're in the queue. Expect a reply within 24 hours — usually much faster. You're making a smart move.</p>
+            <p style="margin-top:14px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:#aaa;">— Nobody Creative // San Antonio</p>
+        </div>
+    </div>
 </div>
 
-<div class="wrap">
-
-    <!-- NAV -->
-    <nav>
-        <a href="#" class="logo"><em>_</em>Nobody Creative.</a>
-        <div class="status">
-            <div class="dot"></div>
-            Building in Public — San Antonio, TX
+<!-- NAV -->
+<nav class="fixed top-0 w-full z-[100] px-6 md:px-10 py-4 flex justify-between items-center nav-blur">
+    <div>
+        <div class="bebas text-xl md:text-2xl tracking-tight uppercase leading-none">
+            <span class="text-yellow-400" id="logo-underscore" style="cursor:crosshair;">_</span>Nobody Creative<span class="text-yellow-400">.</span>
         </div>
-    </nav>
+        <div class="flex items-center gap-2 mt-1">
+            <div class="dot-live"></div>
+            <span class="mono text-[8px] uppercase tracking-[0.4em] text-white/30">San Antonio, TX</span>
+        </div>
+    </div>
+    <button class="btn-y py-2.5 px-6 text-[10px]" onclick="openSlotDrawer()">Claim Your Slot</button>
+</nav>
 
-    <!-- HERO -->
-    <main class="hero">
-
-        <!-- TITLE -->
-        <h1 class="title">
-            <span class="t-trust">TRUST</span>
-            <span class="t-nobody">
-                <span class="nw">
-                    <span class="nw-shadow" aria-hidden="true">NOBODY.</span>
-                    <span class="nw-ghost">NOBODY.</span>
-                    <span class="nw-fill"  aria-hidden="true">NOBODY.</span>
+<!-- HERO -->
+<section class="hero-section">
+    <div class="hero-bg">
+        <img src="https://images.unsplash.com/photo-1652180126105-da17c5824a0f?q=80&w=1800&auto=format&fit=crop"
+             alt="Creative workspace — replace with your own">
+    </div>
+    <div class="hero-inner">
+        <div class="title-block">
+            <h1 class="hn-title">
+                <span class="t-trust">TRUST</span>
+                <span class="t-nobody">
+                    <span class="nw">
+                        <span class="nw-shadow" aria-hidden="true">NOBODY.</span>
+                        <span class="nw-ghost">NOBODY.</span>
+                        <span class="nw-fill"  aria-hidden="true">NOBODY.</span>
+                    </span>
                 </span>
-            </span>
-        </h1>
-
-        <!-- TAGLINE -->
-        <p class="tagline">
-            "Built by Nobody. For everybody who's tired of everything else."
-        </p>
-
-        <!-- WHAT WE BUILD -->
-        <div class="what-wrap">
-            <span class="section-label">What we build</span>
-            <div class="what-grid">
-                <div class="what-item">
-                    <span class="what-num">01</span>
-                    <span class="what-name">Wellness</span>
-                    <span class="what-sub">Apps for<br>the resilient</span>
-                </div>
-                <div class="what-item">
-                    <span class="what-num">02</span>
-                    <span class="what-name">Marketer</span>
-                    <span class="what-sub">Tools built<br>different</span>
-                </div>
-                <div class="what-item">
-                    <span class="what-num">03</span>
-                    <span class="what-name">Games</span>
-                    <span class="what-sub">Bad decisions.<br>Fun results.</span>
-                </div>
-                <div class="what-item">
-                    <span class="what-num">04</span>
-                    <span class="what-name">Content</span>
-                    <span class="what-sub">For real<br>businesses</span>
+            </h1>
+            <div class="hero-text-box">
+                <p class="hero-tagline serif">
+                    "You've built something worth talking about.<br>
+                    The content just hasn't caught up yet."
+                </p>
+                <div class="hero-ctas">
+                    <button class="btn-y px-8 py-4" onclick="openSlotDrawer()">See the $199 Founding Offer</button>
+                    <a href="#guide" class="btn-ghost">How It Works</a>
                 </div>
             </div>
         </div>
+    </div>
+    <div class="relative z-10 pb-8 flex justify-center">
+        <svg class="w-5 h-5 animate-bounce opacity-25" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/>
+        </svg>
+    </div>
+</section>
 
-        <!-- SOCIAL CTA -->
-        <div class="social-wrap">
-            <span class="social-label">Follow for updates — we're building in public</span>
-            <a class="social-link"
-               href="https://instagram.com/_nobodycreative"
-               target="_blank"
-               rel="noopener noreferrer">
-
-                <!-- Instagram icon (inline SVG — no dependency) -->
-                <svg class="ig-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color:rgba(255,255,255,0.5)">
-                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-                    <circle cx="12" cy="12" r="4.5"/>
-                    <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
-                </svg>
-
-                <span class="social-handle">@_nobodycreative</span>
-                <span class="social-arrow">Follow →</span>
-            </a>
-            <div class="social-fine">Instagram — updates drop here first</div>
-        </div>
-
-    </main>
-
-    <!-- FOOTER -->
-    <footer>
-        <div class="foot-left">
-            <span class="foot-tagline">"Trust Nobody. Do the work."</span>
-            <span class="foot-meta">© 2026 Nobody Creative — San Antonio, TX — LOG_ID: 9942-X-NOBODY</span>
-        </div>
-        <div class="foot-right">
-            <a href="mailto:hirebencampbell@gmail.com">hirebencampbell@gmail.com</a>
-        </div>
-    </footer>
-
+<!-- TICKER -->
+<div class="bg-yellow-400 py-4 ticker-outer">
+    <div class="ticker-inner">
+        <div class="tick-item"><div class="tick-dot"></div>Posting without a strategy is just noise</div>
+        <div class="tick-item"><div class="tick-dot"></div>Generic content loses trust faster than silence</div>
+        <div class="tick-item"><div class="tick-dot"></div>Your competitors are already investing in this</div>
+        <div class="tick-item"><div class="tick-dot"></div>Great work deserves great content</div>
+        <div class="tick-item"><div class="tick-dot"></div>You are not the problem — the content is</div>
+        <div class="tick-item"><div class="tick-dot"></div>Nobody Creative // San Antonio // 2026</div>
+        <div class="tick-item"><div class="tick-dot"></div>Posting without a strategy is just noise</div>
+        <div class="tick-item"><div class="tick-dot"></div>Generic content loses trust faster than silence</div>
+        <div class="tick-item"><div class="tick-dot"></div>Your competitors are already investing in this</div>
+        <div class="tick-item"><div class="tick-dot"></div>Great work deserves great content</div>
+        <div class="tick-item"><div class="tick-dot"></div>You are not the problem — the content is</div>
+        <div class="tick-item"><div class="tick-dot"></div>Nobody Creative // San Antonio // 2026</div>
+    </div>
 </div>
 
-<script>
-    // Single fixed background image — no cycling
-    void 0;
-</script>
+<!-- GUIDE -->
+<section id="guide" class="py-20 px-6 md:px-10 bg-[#060606] border-b border-white/5">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
+        <div class="img-card group relative max-w-sm mx-auto md:mx-0">
+            <div class="relative overflow-hidden aspect-[4/5] bg-neutral-900 border border-white/10">
+                <img src="https://images.unsplash.com/photo-1604514628550-37477afdf4e3?w=900&auto=format&fit=crop&q=80"
+                     class="img-gritty w-full h-full object-cover" alt="Replace with your photo">
+                <div class="absolute inset-0 bg-black/25 group-hover:bg-transparent transition-all duration-500"></div>
+                <div class="absolute bottom-4 left-4 bg-yellow-400 text-black px-3 py-1 font-black uppercase text-[10px] tracking-widest mono">THE GUIDE</div>
+            </div>
+        </div>
 
+        <div class="reveal-content">
+            <span class="sec-label">Nobody Creative // San Antonio</span>
+            <h2 class="bebas text-5xl md:text-6xl uppercase tracking-tighter leading-none mb-5">
+                6 Years.<br>6 Million Followers.<br>Now Yours.
+            </h2>
+            <p class="body-copy mb-6">
+                Enterprise-level content strategy — the kind built for major brands — now available to San Antonio businesses. <strong>No agency markup. No learning curve. Just the work.</strong>
+            </p>
+            <div class="mb-6">
+                <button id="bio-toggle"
+                    class="flex items-center gap-3 mono text-[10px] uppercase tracking-widest text-yellow-400 font-bold hover:text-white transition-colors"
+                    aria-expanded="false">
+                    <span id="bio-toggle-label">+ The Full Story</span>
+                </button>
+                <div id="bio-expand"
+                     style="max-height:0;overflow:hidden;transition:max-height 0.45s cubic-bezier(0.4,0,0.2,1);">
+                    <div class="mt-4 space-y-3 body-copy border-l-2 border-white/10 pl-5">
+                        <p>I've spent 6 years building audiences of <strong>over 6 million followers</strong> and running campaigns generating <strong>$75K+ in monthly ad revenue</strong> for major brands — as a one-person operation.</p>
+                        <p>That same enterprise-level playbook — strategy, cinematic production, aerial perspective — is now available to San Antonio businesses serious about growth. No bloated agency. No junior staff learning on your dime.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="border-l-2 border-yellow-400 bg-white/5 p-5">
+                <p class="mono text-[11px] font-bold uppercase text-yellow-400 tracking-widest mb-1">Currently Booking</p>
+                <p class="text-[14px] text-white/70 leading-relaxed">Founding clients in San Antonio. Limited slots at this rate — once they're gone, they're gone.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- BANNER -->
+<div class="relative overflow-hidden border-y border-white/5" style="height:340px;">
+    <img src="https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=2000&auto=format&fit=crop&q=80"
+         class="banner-img absolute inset-0 w-full h-full" alt="On location — replace with your own">
+    <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/30 to-black/60"></div>
+    <div class="absolute inset-0 flex items-center px-10 md:px-16 z-10">
+        <div class="banner-inner">
+            <p class="bebas text-4xl md:text-6xl leading-tight">
+                Cinematic Production.<br>
+                <span style="-webkit-text-stroke:1.5px rgba(255,255,255,0.25);color:transparent;">Built for San Antonio.</span>
+            </p>
+            <p class="mono text-[10px] uppercase tracking-widest text-white/40 mt-3">Strategy · Video · Drone · Social</p>
+        </div>
+    </div>
+</div>
+
+<!-- PROOF -->
+<section id="proof" class="py-20 px-6 md:px-10 bg-black border-b border-white/5">
+    <div class="max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+            <div>
+                <span class="sec-label">[ Intel Verified ]</span>
+                <h2 class="bebas text-5xl md:text-6xl uppercase tracking-tighter leading-none">By the Numbers.</h2>
+            </div>
+            <p class="mono text-[11px] text-white/40 text-right leading-loose uppercase">
+                6 years of deployment data.<br>Enterprise brands. Real results.<br>Now available to you.
+            </p>
+        </div>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-0 border border-white/10 overflow-hidden">
+            <div class="bg-yellow-400 text-black flex flex-col items-center justify-center py-14 px-4 hover:scale-105 hover:z-10 transition-all duration-300">
+                <div class="text-5xl md:text-7xl font-black counter tracking-tighter" data-target="470">0</div>
+                <div class="mono text-[10px] uppercase font-black mt-2 tracking-widest text-center">Impressions (M)</div>
+            </div>
+            <div class="bg-white text-black flex flex-col items-center justify-center py-14 px-4 hover:scale-105 hover:z-10 transition-all duration-300">
+                <div class="text-5xl md:text-7xl font-black counter tracking-tighter" data-target="15">0</div>
+                <div class="mono text-[10px] uppercase font-black mt-2 tracking-widest text-center">Interactions (M)</div>
+            </div>
+            <div class="bg-yellow-400 text-black flex flex-col items-center justify-center py-14 px-4 hover:scale-105 hover:z-10 transition-all duration-300">
+                <div class="text-5xl md:text-7xl font-black counter tracking-tighter" data-target="6">0</div>
+                <div class="mono text-[10px] uppercase font-black mt-2 tracking-widest text-center">Followers (M)</div>
+            </div>
+            <div class="bg-white text-black flex flex-col items-center justify-center py-14 px-4 hover:scale-105 hover:z-10 transition-all duration-300">
+                <div class="text-5xl md:text-7xl font-black counter tracking-tighter" data-target="75">0</div>
+                <div class="mono text-[10px] uppercase font-black mt-2 tracking-widest text-center">Ad Revenue (K)</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- WHAT WE SHOOT -->
+<section class="py-20 px-6 md:px-10 bg-[#060606] border-b border-white/5">
+    <div class="max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-10 gap-4">
+            <div>
+                <span class="sec-label">[ The Production ]</span>
+                <h2 class="bebas text-5xl md:text-6xl uppercase tracking-tighter leading-none">
+                    Every Frame<br>Has a Job.
+                </h2>
+            </div>
+            <p class="mono text-[11px] text-white/35 text-right leading-loose uppercase max-w-xs">
+                Hover to see in colour.<br>
+                All images replaced with real work.
+            </p>
+        </div>
+        <div class="shoot-grid">
+            <div class="shoot-cell">
+                <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&auto=format&fit=crop&q=80"
+                     alt="Aerial shot">
+                <div class="shoot-label">
+                    <span class="tag">Aerial</span>
+                    <p class="sub">Drone Production</p>
+                </div>
+            </div>
+            <div class="shoot-cell">
+                <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&auto=format&fit=crop&q=80"
+                     alt="Cinematic detail">
+                <div class="shoot-label">
+                    <span class="tag">Brand</span>
+                    <p class="sub">Cinematic Production</p>
+                </div>
+            </div>
+            <div class="shoot-cell">
+                <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=800&auto=format&fit=crop&q=80"
+                     alt="Social content">
+                <div class="shoot-label">
+                    <span class="tag">Social</span>
+                    <p class="sub">Strategy + Capture</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="py-20 px-6 md:px-10 bg-black border-b border-white/5">
+    <div class="max-w-6xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-10 gap-4">
+            <div>
+                <span class="sec-label">[ Client Reviews ]</span>
+                <h2 class="bebas text-5xl md:text-6xl uppercase tracking-tighter leading-none">
+                    Don't Take<br>Our Word For It.
+                </h2>
+            </div>
+            <p class="mono text-[10px] text-white/25 uppercase tracking-widest text-right">* Verified industry professionals</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 reveal-content">
+            <div class="testi">
+                <span class="star">★★★★★</span>
+                <p class="testi-quote">"Daddy made a website!! It has yellow on it. I like yellow. Can we get a dog now?"</p>
+                <p class="testi-name">Everly C.</p>
+                <p class="testi-role">Chief Enthusiasm Officer, The Campbell Household</p>
+            </div>
+            <div class="testi">
+                <span class="star">★★★★★</span>
+                <p class="testi-quote">"He spent three weekends on this. I have no idea what it does. But he seems very happy about it. The yellow is a lot."</p>
+                <p class="testi-name">Mrs. Campbell</p>
+                <p class="testi-role">Zookeeper. Long-Suffering Supporter of Side Projects.</p>
+            </div>
+            <div class="testi">
+                <span class="star">★★★★★</span>
+                <p class="testi-quote">"I showed all my friends. Nobody understood it but everyone agreed it looks very professional. I'm so proud. Call me."</p>
+                <p class="testi-name">Ben's Mom</p>
+                <p class="testi-role">Original Founding Client. Has Not Actually Paid Yet.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     OFFER — FIXED
+     ═══════════════════════════════════════════ -->
+<section id="offer" class="offer-section py-20 px-6 md:px-10">
+    <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-12">
+            <span class="mono text-[11px] font-bold uppercase tracking-[0.4em] mb-3 block" style="color:#555;">The Founding Offer</span>
+            <h2 class="bebas text-6xl md:text-9xl uppercase tracking-tighter leading-none" style="color:#000;">The Deployment.</h2>
+            <p class="serif italic text-xl md:text-3xl mt-3" style="color:#444;">
+                "Enterprise-level content. Local commitment. One founding price."
+            </p>
+        </div>
+
+        <!-- Grid: dark left, white right -->
+        <div class="grid grid-cols-1 md:grid-cols-2" style="border:3px solid #000;">
+
+            <!-- LEFT — dark panel, white text -->
+            <div class="offer-left p-10 md:p-12" style="border-bottom:3px solid #000;">
+                <h3 class="bebas text-4xl uppercase mb-1 tracking-tight" style="color:#fff;">What You Get</h3>
+                <p class="mono text-[10px] uppercase tracking-widest mb-8" style="color:rgba(255,255,255,0.4);letter-spacing:0.2em;">Everything needed to look like the brand you are.</p>
+
+                <div class="dlv">
+                    <span class="dlv-num">01</span>
+                    <div>
+                        <p class="dlv-title">Strategy-First Content Audit</p>
+                        <p class="dlv-desc">A 1-hour deep dive into what you have, what's missing, and exactly what we build first.</p>
+                    </div>
+                </div>
+                <div class="dlv">
+                    <span class="dlv-num">02</span>
+                    <div>
+                        <p class="dlv-title">12 Cinematic Posts — 3 Per Week</p>
+                        <p class="dlv-desc">High-resolution, professionally edited content built for your specific platform and audience.</p>
+                    </div>
+                </div>
+                <div class="dlv">
+                    <span class="dlv-num">03</span>
+                    <div>
+                        <p class="dlv-title">Aerial Drone Production</p>
+                        <p class="dlv-desc">Cinematic aerial footage that gives your brand a perspective most local competitors simply can't offer.</p>
+                    </div>
+                </div>
+                <div class="dlv">
+                    <span class="dlv-num">04</span>
+                    <div>
+                        <p class="dlv-title">Full Strategic Direction</p>
+                        <p class="dlv-desc">Captions, hashtag strategy, posting schedule, and a content calendar — done for you, ready to deploy.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT — white panel, clear black text -->
+            <div class="offer-right p-10 md:p-12 flex flex-col justify-center items-center text-center">
+                <span class="offer-label">Founding Client Rate</span>
+                <div id="price-display">$199</div>
+                <span class="offer-price-unit">/ First Month</span>
+
+                <!-- Scarcity indicator -->
+                <div style="width:100%;max-width:320px;margin:24px auto 0;">
+                    <div class="scarcity-bar-wrap">
+                        <div class="scarcity-bar-fill" id="scarcity-fill"></div>
+                    </div>
+                    <div class="scarcity-text">
+                        <span class="taken">3 slots claimed</span>
+                        <span class="left">2 remaining</span>
+                    </div>
+                </div>
+
+                <div class="offer-disclaimer" style="max-width:320px;">
+                    This rate reflects the founding relationship I want to build — not the market rate for this level of production. Slots are limited and this price won't last.
+                </div>
+
+                <button class="btn-y" onclick="openSlotDrawer()"
+                    style="width:100%;max-width:320px;padding:18px 28px;font-size:13px;margin-top:24px;text-align:center;">
+                    Apply for a Founding Slot →
+                </button>
+
+                <span class="offer-note">No commitment until we talk.</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CLOSING STAKES -->
+<section class="relative py-40 px-6 flex items-center justify-center overflow-hidden border-t border-white/5">
+    <img src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=2000&auto=format&fit=crop&q=80"
+         class="absolute inset-0 w-full h-full object-cover grayscale-[30%] opacity-75 brightness-[0.75]" alt="City">
+    <div class="absolute inset-0 bg-black/40"></div>
+    <div class="max-w-3xl mx-auto relative z-10 text-center reveal-content">
+        <h2 class="serif text-4xl md:text-5xl lg:text-6xl italic leading-tight mb-10 text-white">
+            "The businesses that win aren't the best-kept secrets. They're the ones brave enough to be seen."
+        </h2>
+        <button class="btn-y px-12 py-5" onclick="openSlotDrawer()">Don't Stay Invisible →</button>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="py-16 px-6 md:px-10 bg-black border-t border-white/10">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-end gap-10">
+        <div>
+            <div class="bebas text-3xl uppercase tracking-tight mb-2">
+                <span class="text-yellow-400">_</span>Nobody Creative<span class="text-yellow-400">.</span>
+            </div>
+            <p class="serif italic text-[15px] text-white/35 mb-2">"Trust Nobody. Do the work."</p>
+            <div class="mono text-[9px] text-white/20 uppercase tracking-widest leading-relaxed">
+                Strategy &amp; Capture for the Resilient.<br>
+                San Antonio, Texas — LOG_ID: 9942-X-NOBODY
+            </div>
+        </div>
+        <div class="footer-links flex flex-col gap-2 mono text-[10px] uppercase font-bold text-left md:text-right">
+            <a href="mailto:hirebencampbell@gmail.com" class="hover:text-yellow-400 transition-colors text-white/60">hirebencampbell@gmail.com</a>
+            <a href="https://instagram.com/_nobodycreative" target="_blank" class="hover:text-yellow-400 transition-colors text-white/60">IG: @_nobodycreative</a>
+            <a href="https://kylozenzen.github.io/nobody-wellness/" target="_blank"
+               class="hover:text-yellow-400 transition-colors text-white/60 pt-3 border-t border-white/5 mt-2">Explore Wellness Protocols →</a>
+            <span class="text-white/10 mt-4 tracking-[0.5em]">© 2026 Nobody Creative.</span>
+        </div>
+    </div>
+</footer>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+window.addEventListener('load', () => {
+    gsap.utils.toArray('.reveal-content').forEach(el => {
+        gsap.from(el, { y: 40, opacity: 0, duration: 1,
+            scrollTrigger: { trigger: el, start: 'top 87%' } });
+    });
+    gsap.utils.toArray('.counter').forEach(counter => {
+        const target = +counter.getAttribute('data-target');
+        gsap.to(counter, {
+            innerText: target, duration: 2.2, snap: { innerText: 1 },
+            scrollTrigger: { trigger: counter, start: 'top 90%' },
+            onUpdate: function () {
+                const val = Math.ceil(this.targets()[0].innerText);
+                const isRev = counter.parentElement.innerText.includes('Revenue');
+                this.targets()[0].innerText = val + (isRev ? 'K+' : 'M+');
+            }
+        });
+    });
+
+    // Animate scarcity bar on scroll into view
+    const fillEl = document.getElementById('scarcity-fill');
+    if (fillEl) {
+        fillEl.style.width = '0%';
+        ScrollTrigger.create({
+            trigger: fillEl,
+            start: 'top 90%',
+            onEnter: () => { fillEl.style.width = '60%'; }
+        });
+    }
+});
+
+/* ══════════════════════════════════
+   SLOT DRAWER
+══════════════════════════════════ */
+const overlay  = document.getElementById('slot-overlay');
+const drawer   = document.getElementById('slot-drawer');
+const closeBtn = document.getElementById('drawer-close-btn');
+const submitBtn = document.getElementById('drawer-submit-btn');
+
+function openSlotDrawer() {
+    overlay.classList.add('open');
+    drawer.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    drawer.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    // Focus first input for accessibility
+    setTimeout(() => {
+        const first = drawer.querySelector('input, select, textarea');
+        if (first) first.focus();
+    }, 400);
+}
+
+function closeSlotDrawer() {
+    overlay.classList.remove('open');
+    drawer.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    drawer.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+}
+
+closeBtn.addEventListener('click', closeSlotDrawer);
+overlay.addEventListener('click', closeSlotDrawer);
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && drawer.classList.contains('open')) closeSlotDrawer();
+});
+
+submitBtn.addEventListener('click', () => {
+    const name   = document.getElementById('f-name').value.trim();
+    const biz    = document.getElementById('f-biz').value.trim();
+    const email  = document.getElementById('f-email').value.trim();
+    const type   = document.getElementById('f-type').value;
+
+    if (!name || !biz || !email || !type) {
+        // Shake the button
+        submitBtn.style.transform = 'translateX(-6px)';
+        setTimeout(() => submitBtn.style.transform = 'translateX(6px)', 80);
+        setTimeout(() => submitBtn.style.transform = 'translateX(-4px)', 160);
+        setTimeout(() => submitBtn.style.transform = 'translateX(0)', 240);
+        submitBtn.textContent = 'Fill in the required fields ↑';
+        setTimeout(() => submitBtn.textContent = 'Submit My Application →', 2500);
+        return;
+    }
+
+    // Build mailto
+    const phone  = document.getElementById('f-phone').value.trim();
+    const goal   = document.getElementById('f-goal').value.trim();
+    const time   = document.getElementById('f-time').value;
+    const body   = `Name: ${name}\nBusiness: ${biz}\nEmail: ${email}\nPhone: ${phone || 'Not provided'}\nType: ${type}\nGoal: ${goal || 'Not provided'}\nBest time: ${time || 'Not provided'}`;
+    const mailto = `mailto:hirebencampbell@gmail.com?subject=Founding Slot Application — ${encodeURIComponent(biz)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailto;
+
+    // Show success state
+    document.getElementById('drawer-form-wrap').style.display = 'none';
+    document.getElementById('drawer-success').style.display = 'block';
+});
+
+/* ══════════════════════════════════
+   Matrix Rain — 20s idle
+══════════════════════════════════ */
+(function () {
+    const canvas = document.getElementById('matrix-canvas');
+    const ctx = canvas.getContext('2d');
+    const chars = 'TRUSTNOBODY_[]{}01アイウエオカキクケコ'.split('');
+    let cols, drops, animId, idleTimer, running = false;
+    const origTitle = document.title;
+    function resize() {
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        cols = Math.floor(canvas.width / 18); drops = Array(cols).fill(1);
+    }
+    function draw() {
+        ctx.fillStyle = 'rgba(6,6,6,0.16)'; ctx.fillRect(0,0,canvas.width,canvas.height);
+        ctx.font = '14px "Space Mono",monospace';
+        drops.forEach((y,i) => {
+            ctx.fillStyle = '#facc15'; ctx.globalAlpha = 0.9;
+            ctx.fillText(chars[Math.floor(Math.random()*chars.length)], i*18, y*18);
+            ctx.globalAlpha = 1;
+            if (drops[i]*18 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+            drops[i]++;
+        });
+        animId = requestAnimationFrame(draw);
+    }
+    function start() {
+        if (running) return; running = true; resize();
+        canvas.classList.add('active'); document.title = 'nobody is watching.'; draw();
+    }
+    function stop() {
+        if (!running) return; running = false;
+        canvas.classList.remove('active'); document.title = origTitle;
+        cancelAnimationFrame(animId); ctx.clearRect(0,0,canvas.width,canvas.height);
+    }
+    function resetIdle() {
+        if (running) stop(); clearTimeout(idleTimer); idleTimer = setTimeout(start, 20000);
+    }
+    window.addEventListener('resize', resize);
+    ['mousemove','keydown','scroll','click','touchstart'].forEach(e =>
+        document.addEventListener(e, resetIdle, { passive: true }));
+    resetIdle();
+})();
+
+/* $199 triple-click scramble */
+(function () {
+    const el = document.getElementById('price-display');
+    const chars = '!<>-_\\/[]{}—=+*^?#$%&0123456789';
+    let clicks = 0, clickTimer, iv;
+    function scramble(final, ms, cb) {
+        let f = 0, total = ms / 40;
+        el.classList.add('scrambling');
+        iv = setInterval(() => {
+            const p = f / total;
+            el.textContent = final.split('').map((c,i) =>
+                i < Math.floor(p * final.length) ? c : chars[Math.floor(Math.random()*chars.length)]
+            ).join('');
+            if (++f >= total) {
+                clearInterval(iv); el.textContent = final;
+                el.classList.remove('scrambling'); if (cb) cb();
+            }
+        }, 40);
+    }
+    el.addEventListener('click', () => {
+        clicks++; clearTimeout(clickTimer);
+        clickTimer = setTimeout(() => { clicks = 0; }, 600);
+        if (clicks >= 3) {
+            clicks = 0; clearInterval(iv);
+            scramble('priceless.', 800, () => setTimeout(() => scramble('$199', 600), 1400));
+        }
+    });
+})();
+
+/* Bio collapsible toggle */
+(function () {
+    const btn    = document.getElementById('bio-toggle');
+    const panel  = document.getElementById('bio-expand');
+    const label  = document.getElementById('bio-toggle-label');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+        const open = btn.getAttribute('aria-expanded') === 'true';
+        if (open) {
+            panel.style.maxHeight = '0';
+            label.textContent = '+ The Full Story';
+            btn.setAttribute('aria-expanded', 'false');
+        } else {
+            panel.style.maxHeight = panel.scrollHeight + 'px';
+            label.textContent = '− Collapse';
+            btn.setAttribute('aria-expanded', 'true');
+        }
+    });
+})();
+
+/* _ hover 2s tooltip */
+(function () {
+    const u = document.getElementById('logo-underscore');
+    let tip, timer;
+    u.addEventListener('mouseenter', () => {
+        timer = setTimeout(() => {
+            tip = Object.assign(document.createElement('div'), { textContent: 'you found nobody.' });
+            Object.assign(tip.style, {
+                position:'fixed', top:'60px', left:'40px',
+                background:'var(--y)', color:'#000',
+                fontFamily:'"Space Mono",monospace', fontSize:'9px',
+                textTransform:'uppercase', letterSpacing:'0.3em',
+                padding:'6px 12px', zIndex:'9999',
+                opacity:'0', transition:'opacity 0.4s ease', pointerEvents:'none'
+            });
+            document.body.appendChild(tip);
+            requestAnimationFrame(() => { tip.style.opacity = '1'; });
+        }, 2000);
+    });
+    u.addEventListener('mouseleave', () => {
+        clearTimeout(timer);
+        if (tip) { tip.style.opacity = '0'; setTimeout(() => { tip && tip.remove(); tip = null; }, 400); }
+    });
+})();
+</script>
 </body>
 </html>
